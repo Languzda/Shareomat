@@ -1,17 +1,21 @@
-import { Response, Request, Express } from "express";
+import express, {Express} from "express";
+import dotenv from "dotenv";
 
-const express = require("express");
-const dotenv = require("dotenv");
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello There");
-});
+app.use(express.json());
+
+import senDataRoute from "./routes/endpoints";
+app.use("/sendData", senDataRoute);
+
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
+
+
+
