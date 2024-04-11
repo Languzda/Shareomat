@@ -9,8 +9,8 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-import senDataRoute from "./routes/endpoints";
-app.use("/sendData", senDataRoute);
+import sendDataRoute from "./routes/endpoints";
+app.use("/sendData", sendDataRoute);
 
 
 app.listen(port, () => {

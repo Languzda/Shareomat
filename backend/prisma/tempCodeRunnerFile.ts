@@ -1,0 +1,5 @@
+model Card {
+}
+
+model Offer {
+}
