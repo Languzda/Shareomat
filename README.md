@@ -8,7 +8,7 @@
 
 ### card/
 * addCard
-* getCards
+* getUserCards
 
 ### offer/
 * addOffer
