@@ -4,35 +4,71 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/", (req: Request, res: Response) => {
+
+router.post("/addUser", async (req: Request, res: Response) => {
     const prisma = new PrismaClient();
     const data = req.body;
-    const { data1, data2 } = data;
 
-    console.log("Tylko istotne informacje, raczej nie korzsytaj z console.loga");
+    try {
+        await prisma.user.create({
+            data: {
+                login: data["login"],
+                password: data["password"]
+            },
+        });
+        res.statusCode = 200;
+    } catch (e) {
+        console.error("ERROR:", e)
+        res.statusCode = 400;
+    }
 
-    // Tutaj dajemy odpowiednią logikę do obsługi zapytania
-
-
-    // Poniżej tworzymy odpowiedź odpowienią od skutku zapytania
-
-    // jeśli wszystko jest ok, to zwracamy status 200
-    res.statusCode = 200;
-
-    // przykładowa odpowiedź w formacie JSON
     const responseDate = {
-        message: "Hello World",
+        message: "user adding status",
         data: {
-            resData1: "resData1",
-            resData2: "resData2",
+            code: res.statusCode
         },
     };
 
-    // Zawsze zamykamy połączenie z bazą danych
     prisma.$disconnect();
 
-    // wysłanie odpowiedzi w formacie JSON
     res.json(responseDate);
 });
+
+
+router.post("/login", async (req: Request, res: Response) => {
+    const prisma = new PrismaClient();
+    const data = req.body;
+
+    const findUser = async () => await prisma.user.findFirst({
+        // select: {
+        //         id: true,
+        //         password: true
+        //     },
+        where: {
+            login: {
+                equals: data["login"],
+            },
+            password: {
+                equals: data["password"],
+            }
+        },
+    });
+
+    const user = await findUser()
+
+    res.statusCode = (user !== null ? 200 : 401)
+
+    const responseDate = {
+        message: "user data",
+        data: {
+            user: user
+        },
+    };
+
+    prisma.$disconnect();
+
+    res.json(responseDate);
+});
+
 
 export default router;
