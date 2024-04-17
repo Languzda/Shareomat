@@ -44,7 +44,6 @@ router.post("/addOffer", async (req: Request, res: Response) => {
 
 router.get("/getActiveOffers", async (req: Request, res: Response) => {
     const prisma = new PrismaClient();
-    const data = req.body;
 
     let offers
 
