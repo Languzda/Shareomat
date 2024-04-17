@@ -1,6 +1,9 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 
+import userRoute from "./routes/user";
+import cardRoute from "./routes/card";
+import offerRoute from "./routes/offer";
 
 dotenv.config();
 
@@ -9,11 +12,8 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-import userRoute from "./routes/user";
 app.use("/user", userRoute);
-import cardRoute from "./routes/card";
 app.use("/card", cardRoute);
-import offerRoute from "./routes/offer";
 app.use("/offer", offerRoute);
 
 
