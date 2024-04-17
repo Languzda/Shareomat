@@ -26,7 +26,7 @@ router.post("/addCard", async (req: Request, res: Response) => {
     const responseDate = {
         message: "card adding status",
         data: {
-            code: res.statusCode
+            DummyResMess: "Dummy Response"
         },
     };
 

@@ -25,7 +25,7 @@ router.post("/addUser", async (req: Request, res: Response) => {
     const responseDate = {
         message: "user adding status",
         data: {
-            code: res.statusCode
+            DummyResMess: "Dummy Response"
         },
     };
 

@@ -32,7 +32,7 @@ router.post("/addOffer", async (req: Request, res: Response) => {
     const responseDate = {
         message: "offer adding status",
         data: {
-            code: res.statusCode
+            DummyResMess: "Dummy Response"
         },
     };
 
