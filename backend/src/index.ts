@@ -1,6 +1,9 @@
-import express, {Express} from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 
+import userRoute from "./routes/user";
+import cardRoute from "./routes/card";
+import offerRoute from "./routes/offer";
 
 dotenv.config();
 
@@ -9,16 +12,13 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-import sendDataRoute from "./routes/endpoints";
-app.use("/sendData", sendDataRoute);
-import templateRoute from "./routes/template";
-app.use("/template", templateRoute);
-import userRoute from "./routes/user";
 app.use("/user", userRoute);
+app.use("/card", cardRoute);
+app.use("/offer", offerRoute);
 
 
 app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+    console.log(`[server]: Server is running at http://localhost:${port}`);
 });
 
 

@@ -1,62 +1,69 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = "mongodb+srv://mrshow:mrshow@cluster0.fzyjjad.mongodb.net/frontend" //env("DATABASE_URL") //"mongodb+srv://mrshow:mrshow@cluster0.fzyjjad.mongodb.net/frontend?retryWrites=true&w=majority&appName=Cluster0"
-}
-
-model Task {
-  //id Int @id @default(autoincrement()) // sqlte
-  //id String @id @map("_id") // mongodb
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  title      String
-  done       Boolean  @default(false)
-  created_at DateTime @default(now())
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  login      String
-  password   String
-  cards      Card[]
-  alarms     Alarm[]
-  reputation Int     @default(0)
-  //blocked_offers OfferInstance[] //?
+    id         String  @id @default(auto()) @map("_id") @db.ObjectId
+    login      String  @unique
+    password   String
+    cards      Card[]
+    alarms     Alarm[]
+    reputation Int     @default(0)
+    //blocked_offers OfferInstance[] //?
 }
 
 model Card {
-  id      String          @id @default(auto()) @map("_id") @db.ObjectId
-  card_id String          @unique // biedronkowe, ale czy będzie unique?
-  user_id String          @db.ObjectId
-  user    User            @relation(fields: [user_id], references: [id])
-  offers  OfferInstance[]
+    id      String          @id @default(auto()) @map("_id") @db.ObjectId
+    card_id String          @unique // biedronkowe, ale czy będzie unique?
+    user_id String          @db.ObjectId
+    user    User            @relation(fields: [user_id], references: [id])
+    offers2 OfferInstance[]
+    offers  Offer[]
+}
+
+model Offer {
+    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    type        String
+    description String
+    limit       Int
+    price       Float
+    photo       String
+    card_id     String
+    card        Card   @relation(fields: [card_id], references: [card_id])
+    status      String
 }
 
 model OfferType {
-  id          String          @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  type        String
-  description String
-  limit       Int
-  price       Float
-  photo       String
-  offers      OfferInstance[]
+    id          String          @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    type        String
+    description String
+    limit       Int
+    price       Float
+    photo       String
+    offers      OfferInstance[]
 }
 
 model OfferInstance {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  offer_type_id String    @db.ObjectId
-  offer_type    OfferType @relation(fields: [offer_type_id], references: [id])
-  card_id       String
-  card          Card      @relation(fields: [card_id], references: [card_id])
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    offer_type_id String    @db.ObjectId
+    offer_type    OfferType @relation(fields: [offer_type_id], references: [id])
+    card_id       String
+    card          Card      @relation(fields: [card_id], references: [card_id])
+    count         Int
+    status        String
 }
 
 model Alarm {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  user_id  String   @db.ObjectId
-  user     User     @relation(fields: [user_id], references: [id])
-  due_date DateTime
-  info     String[]
+    id       String   @id @default(auto()) @map("_id") @db.ObjectId
+    user_id  String   @db.ObjectId
+    user     User     @relation(fields: [user_id], references: [id])
+    due_date DateTime
+    info     String[]
 }
