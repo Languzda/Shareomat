@@ -7,31 +7,53 @@ const router = express.Router();
 
 router.post("/addUser", async (req: Request, res: Response) => {
     const prisma = new PrismaClient();
-    const data = req.body;
+    const {login, password} = req.body;
+    if(!login || !password) {
+        res.json({
+            message: "login and password are required",
+        })
+    }
+
+    console.log(login,password)
+
+  
 
     try {
-        await prisma.user.create({
+        const newClient = await prisma.user.create({
             data: {
-                login: data["login"],
-                password: data["password"]
+                login: login,
+                password: password
             },
         });
+
+        const responseDate = {
+            message: "user adding status",
+            data: {
+                newClient: newClient
+            },
+        };
+
+        prisma.$disconnect();
         res.statusCode = 200;
+        res.json(responseDate);
+
     } catch (e) {
         console.error("ERROR:", e)
         res.statusCode = 400;
+        res.json({
+            message: "error",
+            data: {
+                error: e
+            }
+        });
+    }finally
+    {
+        prisma.$disconnect();
     }
 
-    const responseDate = {
-        message: "user adding status",
-        data: {
-            DummyResMess: "Dummy Response"
-        },
-    };
 
-    prisma.$disconnect();
 
-    res.json(responseDate);
+
 });
 
 
