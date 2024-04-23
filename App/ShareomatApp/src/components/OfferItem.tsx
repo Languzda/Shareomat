@@ -3,17 +3,9 @@ import type {PropsWithChildren} from 'react';
 import {Text, View, useColorScheme} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {styles} from '../Styles';
+import { OfferType } from '../OfferType';
 
-type OfferItemProps = PropsWithChildren<{
-    name: string;
-    type: string;
-    description: string;
-    limit: number;
-    price: number;
-    photo: string;
-    card_id: number;
-    status: string;
-  }>;
+type OfferItemProps = PropsWithChildren<OfferType>;
 
 export function OfferItem({children, name, type, description, limit, price, photo, card_id, status}: OfferItemProps): React.JSX.Element {
     const isDarkMode = useColorScheme() === 'dark';
