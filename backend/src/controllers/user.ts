@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { addUserToDB, getUserFromDB } from './dbControllers/user';
 import { Request, Response } from 'express';
 
 export async function addUser(req: Request, res: Response) {
-  const prisma = new PrismaClient();
   const { login, password } = req.body;
   if (!login || !password) {
     res.status(400).json({
@@ -11,12 +10,7 @@ export async function addUser(req: Request, res: Response) {
   }
 
   try {
-    const newClient = await prisma.user.create({
-      data: {
-        login: login,
-        password: password,
-      },
-    });
+    const newClient = await addUserToDB(login, password);
 
     const responseDate = {
       message: 'User added successfully',
@@ -35,14 +29,12 @@ export async function addUser(req: Request, res: Response) {
         error: e,
       },
     });
-  } finally {
-    prisma.$disconnect();
   }
 }
 
 export async function loginUser(req: Request, res: Response) {
-  const prisma = new PrismaClient();
   const { login, password } = req.body;
+
   if (!login || !password) {
     res.status(400).json({
       message: 'login and password are required',
@@ -50,12 +42,7 @@ export async function loginUser(req: Request, res: Response) {
   }
 
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        login: login,
-        password: password,
-      },
-    });
+    const user = await getUserFromDB(login, password);
 
     if (user) {
       res.status(200).json({
@@ -78,7 +65,5 @@ export async function loginUser(req: Request, res: Response) {
         error: e,
       },
     });
-  } finally {
-    prisma.$disconnect();
   }
 }
