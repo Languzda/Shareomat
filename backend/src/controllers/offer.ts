@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addOfferToDB, getActiveOffersFromDB, getOfferByCardIdFromDB } from './dbControllers/offer';
+import { addOfferToDB, getActiveOffersFromDB, getOfferByCardIdFromDB, getOfferByIdFromDB } from './dbControllers/offer';
 
 const dummyData = [
   {
@@ -142,6 +142,20 @@ export async function getOfferByCardId(req: Request, res: Response) {
     const offers = await getOfferByCardIdFromDB(card_id);
 
     const responseData = offers || [];
+    res.status(200).json(responseData);
+  } catch (e) {
+    console.error('ERROR:', e);
+    res.status(400).json({ ERROR: e });
+  }
+}
+
+export async function getOfferById(req: Request, res: Response) {
+  const { id } = req.body;
+
+  try {
+    const offer = await getOfferByIdFromDB(id);
+
+    const responseData = offer || {};
     res.status(200).json(responseData);
   } catch (e) {
     console.error('ERROR:', e);
