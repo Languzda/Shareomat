@@ -1,4 +1,4 @@
-import { prisma } from '../prismaClient';
+import { prisma } from './prismaClient';
 
 export function addCardToDB(card_id: string, user_id: string) {
   return prisma.card.create({

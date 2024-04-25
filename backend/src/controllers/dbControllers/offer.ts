@@ -1,4 +1,4 @@
-import { prisma } from '../prismaClient';
+import { prisma } from './prismaClient';
 import { Offer } from '@prisma/client';
 
 export function addOfferToDB(
@@ -55,8 +55,8 @@ export function getActiveOffersAllFromDB() {
   });
 }
 
-export function getOfferByCardIdFromDB(card_id: string) {
-  return prisma.card.findUnique({
+export function getOffersByCardIdFromDB(card_id: string) {
+  return prisma.card.findMany({
     where: {
       card_id: card_id,
     },

@@ -1,4 +1,4 @@
-import { prisma } from '../prismaClient';
+import { prisma } from './prismaClient';
 
 export function addUserToDB(login: string, password: string) {
   return prisma.user.create({

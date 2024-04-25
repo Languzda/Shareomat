@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { addOfferToDB, getActiveOffersFromDB, getOfferByCardIdFromDB, getOfferByIdFromDB } from './dbControllers/offer';
+import {
+  addOfferToDB,
+  getActiveOffersFromDB,
+  getOffersByCardIdFromDB,
+  getOfferByIdFromDB,
+} from './dbControllers/offer';
 
 const dummyData = [
   {
@@ -135,11 +140,11 @@ export async function getActiveOffers(req: Request, res: Response) {
   }
 }
 
-export async function getOfferByCardId(req: Request, res: Response) {
+export async function getOffersByCardId(req: Request, res: Response) {
   const { card_id } = req.body;
 
   try {
-    const offers = await getOfferByCardIdFromDB(card_id);
+    const offers = await getOffersByCardIdFromDB(card_id);
 
     const responseData = offers || [];
     res.status(200).json(responseData);
