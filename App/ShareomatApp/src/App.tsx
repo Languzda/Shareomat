@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Text,
   useColorScheme,
   View,
 } from 'react-native';
@@ -17,6 +18,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {OfferItem} from './components/OfferItem';
 import {OfferType} from './OfferType';
+import {styles} from './Styles';
 
 function App(): React.JSX.Element {
   const ip = '172.27.112.1';
@@ -31,7 +33,7 @@ function App(): React.JSX.Element {
       setActiveOffers(await response.json());
     };
     
-    if (!activeOffers) {
+    if (activeOffers.length == 0) {
       getActiveOffers();
     }
   });
@@ -41,6 +43,18 @@ function App(): React.JSX.Element {
   };
 
   let offers = activeOffers.map((offer, index) => <OfferItem key={`offer${index}`} {...offer} />);
+  let waiting = (
+    <View style={styles.sectionContainer}>
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+      ]}>
+        Waiting for offers...
+      </Text>
+    </View>);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -55,7 +69,7 @@ function App(): React.JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          {offers}
+          {activeOffers.length > 0 ? offers : waiting}
         </View>
       </ScrollView>
     </SafeAreaView>
