@@ -133,7 +133,7 @@ export async function getActiveOffers(req: Request, res: Response) {
   try {
     const offers = await getActiveOffersFromDB();
 
-    res.status(200).json(dummyData);
+    res.status(200).json(offers);//dummyData);
   } catch (e) {
     console.error('ERROR:', e);
     res.status(400).json({ ERROR: e });

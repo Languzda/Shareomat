@@ -16,13 +16,14 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {OfferItem} from './components/OfferItem';
-import {OfferType} from './OfferType';
+import {OfferItem} from '../../components/OfferItem';
+import {OfferType} from '../../OfferType';
 import {styles} from './Styles';
 
-function App(): React.JSX.Element {
-  const ip = '172.27.112.1';
-  const port = '3001';
+function OfferListScreen(): React.JSX.Element {
+  ////const ip = '172.27.112.1';
+  const ip = "192.168.1.102"
+  const port = '3000';
 
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<OfferType[]>([]);
@@ -76,4 +77,4 @@ function App(): React.JSX.Element {
   );
 }
 
-export default App;
+export default OfferListScreen;
