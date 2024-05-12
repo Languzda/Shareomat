@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import dotenv from 'dotenv';
 
 import userRoute from './routes/user';
@@ -22,6 +23,9 @@ app.use((req, res, next) => {
 app.use('/user', userRoute);
 app.use('/card', cardRoute);
 app.use('/offer', offerRoute);
+app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send('Something broke!');
+});
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

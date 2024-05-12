@@ -1,13 +1,13 @@
 import { addCardToDB, getUserCardsFromDB } from './dbControllers/card';
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 export async function addCard(req: Request, res: Response) {
   const { card_id, user_id } = req.body;
+  const errors = validationResult(req);
 
-  if (!card_id || !user_id) {
-    res.status(400).json({
-      message: 'card_id and user_id are required',
-    });
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
 
   try {
@@ -30,11 +30,10 @@ export async function addCard(req: Request, res: Response) {
 
 export async function getUserCards(req: Request, res: Response) {
   const { user_id } = req.body;
+  const errors = validationResult(req);
 
-  if (!user_id) {
-    res.status(400).json({
-      message: 'user_id is required',
-    });
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
 
   try {
