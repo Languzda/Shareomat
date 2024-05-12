@@ -5,6 +5,7 @@ import {
   getOffersByCardIdFromDB,
   getOfferByIdFromDB,
 } from './dbControllers/offer';
+import { checkIfUserExistById } from '../validators/user';
 
 const dummyData = [
   {
@@ -110,9 +111,22 @@ const dummyData = [
 ];
 
 export async function addOffer(req: Request, res: Response) {
+  const { user_id } = req.headers;
   const { name, type, description, limit, price, photo, card_id, status } = req.body;
 
   try {
+    if (typeof user_id != 'string') {
+      res.status(400).json({
+        message: 'Error with userId',
+      });
+    } else {
+      if (!(await checkIfUserExistById(user_id))) {
+        res.status(404).json({
+          message: 'Error: user not found',
+        });
+      }
+    }
+
     const newOffer = await addOfferToDB(name, type, description, limit, price, photo, card_id, status);
 
     const responseData = {
