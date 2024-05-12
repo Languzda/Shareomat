@@ -1,12 +1,15 @@
 import { addUserToDB, getUserFromDB } from './dbControllers/user';
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 export async function addUser(req: Request, res: Response) {
   const { login, password } = req.body;
-  if (!login || !password) {
-    res.status(400).json({
-      message: 'login and password are required',
-    });
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    // const errorMessages = errors.array().map((error) => error.msg);
+    // return res.status(400).json({ errors: errorMessages });
+    return res.status(400).json({ errors: errors.array() });
   }
 
   try {
@@ -19,11 +22,12 @@ export async function addUser(req: Request, res: Response) {
       },
     };
 
-    res.status(201).json(responseDate);
+    return res.status(201).json(responseDate);
   } catch (e) {
     console.error('ERROR:', e);
+    // throw new Error(`'ERROR:', ${e}`);
 
-    res.status(400).json({
+    return res.status(400).json({
       message: 'error',
       data: {
         error: e,
@@ -34,32 +38,34 @@ export async function addUser(req: Request, res: Response) {
 
 export async function loginUser(req: Request, res: Response) {
   const { login, password } = req.body;
+  const errors = validationResult(req);
 
-  if (!login || !password) {
-    res.status(400).json({
-      message: 'login and password are required',
-    });
+  if (!errors.isEmpty()) {
+    // const errorMessages = errors.array().map((error) => error.msg);
+    // return res.status(400).json({ errors: errorMessages });
+    return res.status(400).json({ errors: errors.array() });
   }
 
   try {
     const user = await getUserFromDB(login, password);
 
     if (user) {
-      res.status(200).json({
+      return res.status(200).json({
         message: 'User found',
         data: {
           user: user,
         },
       });
     } else {
-      res.status(404).json({
-        message: 'User not found',
+      return res.status(404).json({
+        message: 'User with that login and password do not exist in DB',
       });
     }
-  } catch (e) {
+  } catch (e: any) {
     console.error('ERROR:', e);
+    // throw new Error(`'ERROR:', ${e}`);
 
-    res.status(400).json({
+    return res.status(400).json({
       message: 'error',
       data: {
         error: e,
