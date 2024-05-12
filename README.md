@@ -14,3 +14,4 @@
 * addOffer
 * getActiveOffers
 * getCardOffers
+* getOfferById/:offer_id
