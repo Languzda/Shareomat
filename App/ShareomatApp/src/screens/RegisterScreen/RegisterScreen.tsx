@@ -3,7 +3,7 @@ import { Alert, Button, SafeAreaView, StatusBar, TextInput, useColorScheme } fro
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { styles } from "./Styles"
 
-function LogInScreen(): React.JSX.Element {
+function RegisterScreen(): React.JSX.Element {
 
   ////const ip = '172.27.112.1'
   const ip = "192.168.1.102"
@@ -17,6 +17,7 @@ function LogInScreen(): React.JSX.Element {
 
   const [login, onChangeLogin] = React.useState('')
   const [password, onChangePassword] = React.useState('')
+  const [repassword, onChangeRepassword] = React.useState('')
 
   const requestOptions = {
     method: 'POST',
@@ -27,19 +28,22 @@ function LogInScreen(): React.JSX.Element {
     })
   }
 
-  const onPressLogIn = async () => {
-    try {
-      await fetch(
-        `http://${ip}:${port}/user/login`, requestOptions)
-        .then(response => {
-          response.json()
-            .then(data => {
-              Alert.alert(data.message)
-            })
-        })
-    }
-    catch (e: any) {
-      console.error(e)
+  const onPressRegister = async () => {
+    if (password !== repassword) {
+      Alert.alert("Podane hasła nie są takie same.")
+    } else {
+      try {
+        await fetch(
+          `http://${ip}:${port}/user/addUser`, requestOptions)
+          .then(response => {
+            response.json()
+              .then(data => {
+                Alert.alert(data.data)
+              })
+          })
+      } catch (e: any) {
+        console.error(e)
+      }
     }
   }
 
@@ -63,13 +67,20 @@ function LogInScreen(): React.JSX.Element {
         placeholder="hasło"
       />
 
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeRepassword}
+        secureTextEntry={true}
+        placeholder="powtórz hasło"
+      />
+
       <Button
-        onPress={onPressLogIn}
-        title="zaloguj"
+        onPress={onPressRegister}
+        title="zarejestruj"
       />
 
     </SafeAreaView>
   )
 }
 
-export default LogInScreen
+export default RegisterScreen
