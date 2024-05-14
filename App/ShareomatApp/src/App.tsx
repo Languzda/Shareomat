@@ -9,6 +9,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import OfferList from './components/OfferList';
 import { StackParamListType } from './types/StackParamListType';
+import OfferView from './components/OfferView';
 
 const Stack = createNativeStackNavigator<StackParamListType>();
 
@@ -27,6 +28,7 @@ function App(): React.JSX.Element {
       />
       <Stack.Navigator>
         <Stack.Screen name="OfferList" component={OfferList} />
+        <Stack.Screen name="OfferView" component={OfferView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

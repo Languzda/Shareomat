@@ -13,6 +13,10 @@ import { styles } from '../Styles';
 import { OfferListPropsType } from '../types/OfferListPropsType';
 
 function OfferList({ route, navigation }: OfferListPropsType): React.JSX.Element {
+  function onOfferPressed(id: number) {
+    navigation.navigate("OfferView", {id});
+  }
+
   const ip = '172.27.112.1';
   const port = '3001';
 
@@ -34,7 +38,7 @@ function OfferList({ route, navigation }: OfferListPropsType): React.JSX.Element
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  let offers = activeOffers.map((offer, index) => <OfferListItem key={`offer${index}`} {...offer} />);
+  let offers = activeOffers.map((offer, index) => <OfferListItem key={`offer${index}`} {...offer} onPress={onOfferPressed}/>);
   let waiting = (
     <View style={styles.sectionContainer}>
       <Text
