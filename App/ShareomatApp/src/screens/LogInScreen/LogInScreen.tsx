@@ -30,7 +30,7 @@ function LogInScreen(): React.JSX.Element {
   const onPressLogIn = async () => {
     try {
       await fetch(
-        `http://${ip}:${port}/user/login`, requestOptions)
+        `http://${ip}:${port}/user/logIn`, requestOptions)
         .then(response => {
           response.json()
             .then(data => {

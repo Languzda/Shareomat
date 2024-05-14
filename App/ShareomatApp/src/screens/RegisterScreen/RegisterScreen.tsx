@@ -38,7 +38,11 @@ function RegisterScreen(): React.JSX.Element {
           .then(response => {
             response.json()
               .then(data => {
-                Alert.alert(data.data)
+                if (data.errors === undefined) {
+                  Alert.alert(data.message)
+                } else {
+                  Alert.alert(data.errors[0].msg)
+                }
               })
           })
       } catch (e: any) {
