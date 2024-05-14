@@ -27,7 +27,8 @@ model Card {
 }
 
 model Offer {
-    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    date_added  DateTime @default(now())
     name        String
     type        String
     description String
@@ -35,7 +36,7 @@ model Offer {
     price       Float
     photo       String
     card_id     String
-    card        Card   @relation(fields: [card_id], references: [card_id])
+    card        Card     @relation(fields: [card_id], references: [card_id])
     status      String
 }
 
@@ -52,6 +53,7 @@ model OfferType {
 
 model OfferInstance {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    date_added    DateTime  @default(now())
     offer_type_id String    @db.ObjectId
     offer_type    OfferType @relation(fields: [offer_type_id], references: [id])
     card_id       String

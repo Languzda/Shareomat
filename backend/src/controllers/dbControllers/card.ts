@@ -18,3 +18,11 @@ export function getUserCardsFromDB(user_id: string) {
     },
   });
 }
+
+export function getCardByIdFromDB(card_id: string) {
+  return prisma.card.findUnique({
+    where: {
+      card_id: card_id,
+    },
+  });
+}
