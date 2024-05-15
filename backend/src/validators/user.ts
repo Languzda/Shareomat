@@ -40,7 +40,7 @@ export const registerRouteValidator = [
     .withMessage('login must have at least 3 characters')
     .custom(async (value) => {
       if (await checkIfUserExistByLogin(value)) {
-        return Promise.reject('User already exist');
+        return Promise.reject('User already exists');
       }
     }),
 ];

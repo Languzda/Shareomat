@@ -1,15 +1,16 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {Text, View, useColorScheme} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {styles} from '../Styles';
-import { OfferType } from '../OfferType';
+import type { PropsWithChildren } from 'react';
+import { Text, TouchableNativeFeedback, View, useColorScheme } from 'react-native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { styles } from './Styles';
+import { ListOfferType } from '../../types/ListOfferType';
 
-type OfferItemProps = PropsWithChildren<OfferType>;
+type OfferItemProps = PropsWithChildren<ListOfferType> & {onPress: (id: number) => void;};
 
-export function OfferItem({children, name, type, description, limit, price, photo, card_id, status}: OfferItemProps): React.JSX.Element {
-    const isDarkMode = useColorScheme() === 'dark';
-    return (
+export function OfferListItem({ children, id, name, description, price, onPress }: OfferItemProps): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <TouchableNativeFeedback onPress={() => onPress(id)}>
       <View style={styles.sectionContainer}>
         <Text
           style={[
@@ -39,5 +40,6 @@ export function OfferItem({children, name, type, description, limit, price, phot
           {price}
         </Text>
       </View>
-    );
-  }
+    </TouchableNativeFeedback>
+  );
+}

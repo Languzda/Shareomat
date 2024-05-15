@@ -36,7 +36,7 @@ export async function addUser(req: Request, res: Response) {
   }
 }
 
-export async function loginUser(req: Request, res: Response) {
+export async function logInUser(req: Request, res: Response) {
   const { login, password } = req.body;
   const errors = validationResult(req);
 
