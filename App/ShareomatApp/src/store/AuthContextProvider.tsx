@@ -21,8 +21,8 @@ const AuthContextProvider = (children: ReactNode) => {
   const authContext: authContextType = {
     token: token,
     userId: userId,
-    login: handleLogin,
-    logout: handleLogout,
+    onLogin: handleLogin,
+    onLogout: handleLogout,
     isAuthenticated: isAuthenticated,
   };
 
