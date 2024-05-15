@@ -7,12 +7,12 @@ import {
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { OfferListItem } from './OfferListItem';
-import { ListOfferType } from '../types/ListOfferType';
-import { styles } from '../Styles';
-import { OfferListPropsType } from '../types/OfferListPropsType';
+import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
+import { ListOfferType } from '../../types/ListOfferType';
+import { styles } from './Styles';
+import { OfferListPropsType } from '../../types/OfferListPropsType';
 
-function OfferList({ route, navigation }: OfferListPropsType): React.JSX.Element {
+function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
     navigation.navigate("OfferView", {id});
   }
@@ -66,4 +66,4 @@ function OfferList({ route, navigation }: OfferListPropsType): React.JSX.Element
   );
 }
 
-export default OfferList;
+export default OfferListScreen;

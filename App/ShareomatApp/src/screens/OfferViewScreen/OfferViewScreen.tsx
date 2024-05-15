@@ -4,11 +4,11 @@ import {
     View,
 } from 'react-native';
 
-import { OfferViewPropsType } from '../types/OfferViewPropsType';
-import { OfferType } from '../types/OfferType';
-import { styles } from '../Styles';
+import { OfferViewPropsType } from '../../types/OfferViewPropsType';
+import { OfferType } from '../../types/OfferType';
+import { styles } from './Styles';
 
-function OfferView({ route, navigation }: OfferViewPropsType): React.JSX.Element {
+function OfferViewScreen({ route, navigation }: OfferViewPropsType): React.JSX.Element {
     const ip = '172.27.112.1';
     const port = '3001';
 
@@ -37,4 +37,4 @@ function OfferView({ route, navigation }: OfferViewPropsType): React.JSX.Element
     )
 }
 
-export default OfferView;
+export default OfferViewScreen;

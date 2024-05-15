@@ -2,8 +2,8 @@ import React from 'react';
 import type { PropsWithChildren } from 'react';
 import { Text, TouchableNativeFeedback, View, useColorScheme } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { styles } from '../Styles';
-import { ListOfferType } from '../types/ListOfferType';
+import { styles } from './Styles';
+import { ListOfferType } from '../../types/ListOfferType';
 
 type OfferItemProps = PropsWithChildren<ListOfferType> & {onPress: (id: number) => void;};
 
