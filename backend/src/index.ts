@@ -1,10 +1,12 @@
 import express, { Express } from 'express';
-import { Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import dotenv from 'dotenv';
+import 'express-async-errors';
 
 import userRoute from './routes/user';
 import cardRoute from './routes/card';
 import offerRoute from './routes/offer';
+import { errorHandler } from './middlewares/errors';
+import { isAuth } from './middlewares/isAuth';
 
 dotenv.config();
 
@@ -21,11 +23,9 @@ app.use((req, res, next) => {
 });
 
 app.use('/user', userRoute);
-app.use('/card', cardRoute);
+app.use('/card', isAuth, cardRoute);
 app.use('/offer', offerRoute);
-app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).send('Something broke!');
-});
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
