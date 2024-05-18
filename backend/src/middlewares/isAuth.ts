@@ -1,8 +1,7 @@
 import jwt from 'jsonwebtoken';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 
 import BadRequestError from '../errors/BadRequestError';
-import ServerError from '../errors/ServerError';
 import { RequestWithUser } from '../types/RequestWithUser';
 
 export const isAuth = (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -11,11 +10,12 @@ export const isAuth = (req: RequestWithUser, res: Response, next: NextFunction) 
     throw new BadRequestError({ code: 401, message: 'Not authenticated', logging: false });
   }
   const token = authHeader.split(' ')[1];
+
   let decodedToken;
   try {
-    decodedToken = jwt.verify(token, 'somesupersecretsecret');
-  } catch (err) {
-    throw new ServerError();
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET as string);
+  } catch (err: any) {
+    throw new BadRequestError({ code: 401, message: 'Token not authenticated', context: { err }, logging: false });
   }
   if (!decodedToken) {
     throw new BadRequestError({ code: 401, message: 'Not authenticated', logging: false });

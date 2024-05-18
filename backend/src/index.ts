@@ -6,7 +6,6 @@ import userRoute from './routes/user';
 import cardRoute from './routes/card';
 import offerRoute from './routes/offer';
 import { errorHandler } from './middlewares/errors';
-import { isAuth } from './middlewares/isAuth';
 
 dotenv.config();
 
@@ -23,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/user', userRoute);
-app.use('/card', isAuth, cardRoute);
+app.use('/card', cardRoute);
 app.use('/offer', offerRoute);
 app.use(errorHandler);
 
