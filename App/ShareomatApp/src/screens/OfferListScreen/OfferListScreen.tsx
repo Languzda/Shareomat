@@ -11,10 +11,15 @@ import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
 import { ListOfferType } from '../../types/ListOfferType';
 import { styles } from './Styles';
 import { OfferListPropsType } from '../../types/OfferListPropsType';
+import { FAB, Icon } from "react-native-elements";
 
 function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
     navigation.navigate("OfferView", {id});
+  }
+
+  function onFABPress() {
+    navigation.navigate("AddOffer");
   }
 
   const ip = '172.27.112.1';
@@ -53,16 +58,19 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
     </View>);
 
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      style={backgroundStyle}>
-      <View
-        style={{
-          backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        }}>
-        {activeOffers.length > 0 ? offers : waiting}
-      </View>
-    </ScrollView>
+    <View style={{height: '100%'}}>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          {activeOffers.length > 0 ? offers : waiting}
+        </View>
+      </ScrollView>
+      <FAB placement="right" icon={<Icon type="font-awesome-5" name="plus" color="white" />} onPress={onFABPress} />
+    </View>
   );
 }
 

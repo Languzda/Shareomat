@@ -5,6 +5,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { TabParamListType } from "../../types/TabParamListType";
 import ActiveOffersScreen from "../ActiveOffersScreen/ActiveOffersScreen";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
+import { Icon } from "react-native-elements";
 
 const Tab = createBottomTabNavigator<TabParamListType>();
 
@@ -26,12 +27,20 @@ function AppScreen(): React.JSX.Element {
         <Tab.Screen
           name="ActiveOffers"
           component={ActiveOffersScreen}
-          options={{headerShown: false}}
+          options={{
+            headerShown: false,
+            tabBarIcon: (props) => <Icon type="font-awesome-5" name="list" color={props.color} size={props.size}/>,
+          }}
           listeners={{tabPress: (e) => {
             e.preventDefault();
             navigationRef.dispatch(CommonActions.navigate({name: "OfferList"}));
           }}}/>
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen 
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            tabBarIcon: (props) => <Icon type="font-awesome-5" name="user" color={props.color} size={props.size}/>,
+          }} />
       </Tab.Navigator>
     </NavigationContainer>
   );
