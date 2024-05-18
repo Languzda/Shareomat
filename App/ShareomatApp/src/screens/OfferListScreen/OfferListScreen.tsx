@@ -1,39 +1,34 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
   ScrollView,
-  StatusBar,
   Text,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {OfferItem} from '../../components/OfferItem';
-import {OfferType} from '../../OfferType';
-import {styles} from './Styles';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
+import { ListOfferType } from '../../types/ListOfferType';
+import { styles } from './Styles';
+import { OfferListPropsType } from '../../types/OfferListPropsType';
 
-function OfferListScreen(): React.JSX.Element {
-  ////const ip = '172.27.112.1';
-  const ip = "192.168.1.102"
-  const port = '3000';
+function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
+  function onOfferPressed(id: number) {
+    navigation.navigate("OfferView", {id});
+  }
+
+  const ip = '172.27.112.1';
+  const port = '3001';
 
   const isDarkMode = useColorScheme() === 'dark';
-  const [activeOffers, setActiveOffers] = useState<OfferType[]>([]);
+  const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
 
   useEffect(() => {
     async function getActiveOffers() {
       const response = await fetch(`http://${ip}:${port}/offer/getActiveOffers`);
       setActiveOffers(await response.json());
     };
-    
+
     if (activeOffers.length == 0) {
       getActiveOffers();
     }
@@ -43,7 +38,7 @@ function OfferListScreen(): React.JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  let offers = activeOffers.map((offer, index) => <OfferItem key={`offer${index}`} {...offer} />);
+  let offers = activeOffers.map((offer, index) => <OfferListItem key={`offer${index}`} {...offer} onPress={onOfferPressed}/>);
   let waiting = (
     <View style={styles.sectionContainer}>
       <Text
@@ -52,28 +47,22 @@ function OfferListScreen(): React.JSX.Element {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-      ]}>
+        ]}>
         Waiting for offers...
       </Text>
     </View>);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          {activeOffers.length > 0 ? offers : waiting}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={backgroundStyle}>
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        }}>
+        {activeOffers.length > 0 ? offers : waiting}
+      </View>
+    </ScrollView>
   );
 }
 
