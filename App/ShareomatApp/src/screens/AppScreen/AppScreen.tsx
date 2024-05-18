@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { StatusBar, useColorScheme } from "react-native";
-import { StackParamListType } from "../../types/StackParamListType";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import OfferListScreen from "../OfferListScreen/OfferListScreen";
-import OfferViewScreen from "../OfferViewScreen/OfferViewScreen";
+import { DrawerParamListType } from "../../types/DrawerParamListType";
+import ActiveOffersScreen from "../ActiveOffersScreen/ActiveOffersScreen";
+import ProfileScreen from "../ProfileScreen/ProfileScreen";
 
-const Stack = createNativeStackNavigator<StackParamListType>();
+const Drawer = createDrawerNavigator<DrawerParamListType>();
 
 function AppScreen(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -21,10 +21,10 @@ function AppScreen(): React.JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <Stack.Navigator>
-        <Stack.Screen name="OfferList" component={OfferListScreen} />
-        <Stack.Screen name="OfferView" component={OfferViewScreen} />
-      </Stack.Navigator>
+      <Drawer.Navigator>
+        <Drawer.Screen name="ActiveOffers" component={ActiveOffersScreen} />
+        <Drawer.Screen name="Profile" component={ProfileScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
