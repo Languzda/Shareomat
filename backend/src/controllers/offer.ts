@@ -4,6 +4,7 @@ import {
   getActiveOffersFromDB,
   getOffersByCardIdFromDB,
   getOfferByIdFromDB,
+  updateToUsedOffer,
 } from './dbControllers/offer';
 import { validationResult } from 'express-validator';
 
@@ -78,6 +79,39 @@ export async function getOfferById(req: Request, res: Response) {
 
     const responseData = offer || {};
     return res.status(200).json(responseData);
+  } catch (e) {
+    console.error('ERROR:', e);
+    return res.status(400).json({ ERROR: e });
+  }
+}
+
+export async function useOffer(req: Request, res: Response) {
+  const { offer_id } = req.params;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const offer = await getOfferByIdFromDB(offer_id);
+
+    if (offer) {
+      const updatedOffer = await updateToUsedOffer(offer_id);
+
+      const responseData = {
+        message: 'offer used successfully',
+        data: {
+          updatedOffer,
+        },
+      };
+
+      return res.status(200).json(responseData);
+    } else {
+      return res.status(404).json({
+        message: 'offer with that id do not exist in DB',
+      });
+    }
   } catch (e) {
     console.error('ERROR:', e);
     return res.status(400).json({ ERROR: e });

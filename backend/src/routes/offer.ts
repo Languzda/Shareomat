@@ -1,5 +1,5 @@
 import express from 'express';
-import { addOffer, getActiveOffers, getOfferById, getOffersByCardId } from '../controllers/offer';
+import { addOffer, getActiveOffers, getOfferById, getOffersByCardId, useOffer } from '../controllers/offer';
 import {
   addOfferRouteValidator,
   getOfferByCardIdRouteValidator,
@@ -16,5 +16,7 @@ router.get('/getActiveOffers', isAuth, getActiveOffers);
 router.get('/getCardOffers', isAuth, getOfferByCardIdRouteValidator, getOffersByCardId);
 // get offer by id
 router.get('/getOfferById/:offer_id', isAuth, getOfferByIdRouteValidator, getOfferById);
+
+router.put('/useOfferById/:offer_id', getOfferByIdRouteValidator, useOffer);
 
 export default router;
