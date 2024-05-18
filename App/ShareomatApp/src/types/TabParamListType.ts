@@ -1,4 +1,4 @@
-export type DrawerParamListType = {
+export type TabParamListType = {
     ActiveOffers: undefined;
     Profile: undefined;
 };

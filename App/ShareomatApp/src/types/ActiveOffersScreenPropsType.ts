@@ -1,4 +1,4 @@
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { DrawerParamListType } from "./DrawerParamListType";
+import { TabParamListType } from "./TabParamListType";
 
-export type ActiveOffersScreenPropsType = DrawerScreenProps<DrawerParamListType, 'ActiveOffers'>
+export type ActiveOffersScreenPropsType = DrawerScreenProps<TabParamListType, 'ActiveOffers'>

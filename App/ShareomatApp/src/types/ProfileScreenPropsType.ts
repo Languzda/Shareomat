@@ -1,4 +1,4 @@
 import { DrawerScreenProps } from "@react-navigation/drawer";
-import { DrawerParamListType } from "./DrawerParamListType";
+import { TabParamListType } from "./TabParamListType";
 
-export type ProfileScreenPropsType = DrawerScreenProps<DrawerParamListType, 'Profile'>
+export type ProfileScreenPropsType = DrawerScreenProps<TabParamListType, 'Profile'>
