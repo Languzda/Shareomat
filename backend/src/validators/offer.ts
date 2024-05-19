@@ -1,6 +1,12 @@
 import { body, header, param } from 'express-validator';
 import { checkIfUserExistById } from './user';
 import { checkIfCardExistsById } from './card';
+import { getOfferStatus } from '../controllers/dbControllers/offer';
+
+const checkIfOfferActive = async (offer_id: string) => {
+  const { status } = (await getOfferStatus(offer_id)) || {};
+  return status === 'active';
+};
 
 export const addOfferRouteValidator = [
   body('name', 'Name must be not empty').not().isEmpty(),
@@ -36,3 +42,11 @@ export const getOfferByCardIdRouteValidator = [
 ];
 
 export const getOfferByIdRouteValidator = [param('offer_id', 'Validate offer_id param').not().isEmpty()];
+export const useOfferByIdRouteValidator = [
+  param('offer_id', 'Validate offer_id param').not().isEmpty(),
+  param('offer_id', 'Validate offer_id param').custom(async (value) => {
+    if (!(await checkIfOfferActive(value))) {
+      return Promise.reject('Offer is not active or not found');
+    }
+  }),
+];

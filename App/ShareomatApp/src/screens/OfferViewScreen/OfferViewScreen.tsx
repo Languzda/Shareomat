@@ -15,13 +15,13 @@ function OfferViewScreen({ route, navigation }: OfferViewPropsType): React.JSX.E
     const [offer, setOffer] = useState<OfferType>();
 
     useEffect(() => {
-        async function getActiveOffers() {
+        async function getOffer() {
             const response = await fetch(`http://${ip}:${port}/offer/getOfferById/${route.params.id}`);
             setOffer(await response.json());
         };
 
         if (!offer) {
-            getActiveOffers();
+            getOffer();
         }
     });
 
