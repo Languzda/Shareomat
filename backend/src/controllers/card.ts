@@ -1,9 +1,11 @@
 import { addCardToDB, getUserCardsFromDB } from './dbControllers/card';
 import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
+import { RequestWithUser } from '../types/RequestWithUser';
 
-export async function addCard(req: Request, res: Response) {
-  const { card_id, user_id } = req.body;
+export async function addCard(req: RequestWithUser, res: Response) {
+  const user_id = req.userId;
+  const { card_id } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

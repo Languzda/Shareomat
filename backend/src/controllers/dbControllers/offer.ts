@@ -65,3 +65,36 @@ export function getOffersByCardIdFromDB(card_id: string) {
     },
   });
 }
+
+export function updateToUsedOffer(offer_id: Offer['id']) {
+  return prisma.offer.update({
+    where: {
+      id: offer_id,
+    },
+    data: {
+      status: 'used',
+    },
+  });
+}
+
+export function updateLockedOffer(offer_id: Offer['id']) {
+  return prisma.offer.update({
+    where: {
+      id: offer_id,
+    },
+    data: {
+      status: 'locked',
+    },
+  });
+}
+
+export function getOfferStatus(offer_id: Offer['id']) {
+  return prisma.offer.findUnique({
+    where: {
+      id: offer_id,
+    },
+    select: {
+      status: true,
+    },
+  });
+}
