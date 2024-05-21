@@ -9,8 +9,8 @@ import { OfferType } from '../../types/OfferType';
 import { styles } from './Styles';
 
 function OfferViewScreen({ route, navigation }: OfferViewPropsType): React.JSX.Element {
-    const ip = '172.27.112.1';
-    const port = '3001';
+    const ip = process.env.IP;
+    const port = process.env.PORT;
 
     const [offer, setOffer] = useState<OfferType>();
 

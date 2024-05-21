@@ -5,9 +5,8 @@ import { styles } from "./Styles"
 
 function RegisterScreen(): React.JSX.Element {
 
-  ////const ip = '172.27.112.1'
-  const ip = "192.168.1.102"
-  const port = '3000'
+  const ip = process.env.IP;
+  const port = process.env.PORT;
 
   const isDarkMode = useColorScheme() === 'dark'
 

@@ -22,8 +22,8 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
     navigation.navigate("AddOffer");
   }
 
-  const ip = '172.27.112.1';
-  const port = '3001';
+  const ip = process.env.IP;
+  const port = process.env.PORT;
 
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
