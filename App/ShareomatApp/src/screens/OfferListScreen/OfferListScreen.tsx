@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ScrollView,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+import { ScrollView, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
 import { ListOfferType } from '../../types/ListOfferType';
 import { styles } from './Styles';
 import { OfferListPropsType } from '../../types/OfferListPropsType';
 import { FAB, Icon } from "react-native-elements";
+import { getActiveOffers as _getActiveOffers } from '../../controllers/OfferController';
 
 function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
@@ -22,16 +17,13 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
     navigation.navigate("AddOffer");
   }
 
-  const ip = process.env.IP;
-  const port = process.env.PORT;
-
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
 
   useEffect(() => {
     async function getActiveOffers() {
-      const response = await fetch(`http://${ip}:${port}/offer/getActiveOffers`);
-      setActiveOffers(await response.json());
+      const offers = await _getActiveOffers();
+      setActiveOffers(await offers);
     };
 
     if (activeOffers.length == 0) {
