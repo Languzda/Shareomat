@@ -2,7 +2,10 @@ const ip = process.env.IP;
 const port = process.env.PORT;
 
 export async function getActiveOffers() {
+  console.log(process.env.IP);
+  console.log(ip);
   const response = await fetch(`http://${ip}:${port}/offer/getActiveOffers`);
+  
   return response.json();
 };
 

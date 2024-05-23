@@ -8,14 +8,12 @@ function App(): React.JSX.Element {
 
   if (loggedIn) {
     return (
-      //@ts-ignore
       <AuthContextProvider>
         <AppScreen />
       </AuthContextProvider>
     );
   } else {
     return (
-      //@ts-ignore
       <AuthContextProvider>
         <LogInScreen />
       </AuthContextProvider>
