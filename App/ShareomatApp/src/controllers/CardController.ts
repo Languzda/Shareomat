@@ -3,11 +3,14 @@ import { Alert } from "react-native";
 const ip = process.env.IP;
 const port = process.env.PORT;
 
-export async function addCard(cardId: string) {
+export async function addCard(cardId: string, token: string) {
 
   const requestOptions = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
     body: JSON.stringify({
       card_id: cardId
     })

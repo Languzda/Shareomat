@@ -3,8 +3,9 @@ import { Alert, Button, SafeAreaView, StatusBar, TextInput, useColorScheme } fro
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { styles } from "./Styles"
 import { register } from "../../controllers/UserController";
+import { RegisterPropsType } from "../../types/RegisterPropsType";
 
-function RegisterScreen(): React.JSX.Element {
+function RegisterScreen({route, navigation}: RegisterPropsType): React.JSX.Element {
 
   const isDarkMode = useColorScheme() === 'dark'
   const backgroundStyle = {

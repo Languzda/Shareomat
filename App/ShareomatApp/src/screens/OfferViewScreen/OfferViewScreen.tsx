@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { OfferViewPropsType } from '../../types/OfferViewPropsType';
 import { OfferType } from '../../types/OfferType';
 import { styles } from './Styles';
 import { getOfferById } from '../../controllers/OfferController';
+import { AuthContext } from '../../store/authContext';
 
 function OfferViewScreen({ route, navigation }: OfferViewPropsType): React.JSX.Element {
   const id = route.params.id
+  const context = useContext(AuthContext);
 
   const [offer, setOffer] = useState<OfferType>();
 
   useEffect(() => {
     async function getOffer() {
-      const offer = await getOfferById(id);
+      const offer = await getOfferById(id, context.token);
       setOffer(offer);
     };
 

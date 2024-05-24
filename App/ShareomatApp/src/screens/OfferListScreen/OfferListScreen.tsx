@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ScrollView, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
@@ -7,6 +7,7 @@ import { styles } from './Styles';
 import { OfferListPropsType } from '../../types/OfferListPropsType';
 import { FAB, Icon } from "react-native-elements";
 import { getActiveOffers as _getActiveOffers } from '../../controllers/OfferController';
+import { AuthContext } from '../../store/authContext';
 
 function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
@@ -19,10 +20,11 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
 
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
+  const context = useContext(AuthContext);
 
   useEffect(() => {
     async function getActiveOffers() {
-      const offers = await _getActiveOffers();
+      const offers = await _getActiveOffers(context.token);
       setActiveOffers(await offers);
     };
 

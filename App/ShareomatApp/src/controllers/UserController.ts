@@ -1,9 +1,10 @@
 import { Alert } from "react-native";
+import { authContextType } from "../store/authContext";
 
 const ip = process.env.IP;
 const port = process.env.PORT;
 
-export async function logIn(login: string, password: string) {
+export async function logIn(login: string, password: string, context: authContextType) {
 
   const requestOptions = {
     method: 'POST',
@@ -20,12 +21,18 @@ export async function logIn(login: string, password: string) {
       .then(response => {
         response.json()
           .then(data => {
-            Alert.alert(data.message)
+            if (data.error === undefined) {
+              context.onLogin(data.data.token, data.data.userId);
+            }
+            else {
+              Alert.alert("nie udało sie :(");
+            }
           })
       })
   }
   catch (e: any) {
-    console.error(e)
+    console.error(e);
+    //todo
   }
 }
 
@@ -46,10 +53,12 @@ export async function register(login: string, password: string) {
       .then(response => {
         response.json()
           .then(data => {
+            console.log(data);
+            
             if (data.errors === undefined) {
               Alert.alert(data.message)
             } else {
-              Alert.alert(data.errors[0].msg)
+              Alert.alert(data.errors[0].message)
             }
           })
       })

@@ -1,11 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Alert, Button, SafeAreaView, StatusBar, TextInput, useColorScheme } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { styles } from "./Styles"
 import { addCard } from "../../controllers/CardController";
+import { AuthContext } from "../../store/authContext";
 
 function CardAddingScreen(): React.JSX.Element {
-
+  const context = useContext(AuthContext);
   const isDarkMode = useColorScheme() === 'dark'
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -14,7 +15,7 @@ function CardAddingScreen(): React.JSX.Element {
   const [cardId, onChangeCardId] = React.useState('')
 
   const onPressAddCard = async () => {
-    addCard(cardId) // , userId
+    addCard(cardId, context.token) // , userId
   }
 
   return (
