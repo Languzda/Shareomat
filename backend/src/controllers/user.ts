@@ -59,10 +59,9 @@ export async function logInUser(req: Request, res: Response) {
         },
       });
     } else {
-      // throw new BadRequestError({ message: 'User with that login and password do not exist in DB', code: 404});
-
+      // throw new BadRequestError({ message: 'User with that login and password does not exist in DB', code: 404});
       return res.status(404).json({
-        message: 'User with that login and password do not exist in DB',
+        message: 'User with that login and password does not exist in DB',
       });
     }
   } catch (e: any) {

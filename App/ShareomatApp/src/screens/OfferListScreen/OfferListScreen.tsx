@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import {
-  ScrollView,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
+import React, { useContext, useEffect, useState } from 'react';
+import { ScrollView, Text, useColorScheme, View } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
 import { ListOfferType } from '../../types/ListOfferType';
 import { styles } from './Styles';
 import { OfferListPropsType } from '../../types/OfferListPropsType';
 import { FAB, Icon } from "react-native-elements";
+import { getActiveOffers as _getActiveOffers } from '../../controllers/OfferController';
+import { AuthContext } from '../../store/authContext';
 
 function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
@@ -22,16 +18,14 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
     navigation.navigate("AddOffer");
   }
 
-  const ip = '172.27.112.1';
-  const port = '3001';
-
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
+  const context = useContext(AuthContext);
 
   useEffect(() => {
     async function getActiveOffers() {
-      const response = await fetch(`http://${ip}:${port}/offer/getActiveOffers`);
-      setActiveOffers(await response.json());
+      const offers = await _getActiveOffers(context.token);
+      setActiveOffers(await offers);
     };
 
     if (activeOffers.length == 0) {

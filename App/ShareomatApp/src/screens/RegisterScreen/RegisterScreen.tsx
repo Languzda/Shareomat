@@ -2,15 +2,12 @@ import React from "react"
 import { Alert, Button, SafeAreaView, StatusBar, TextInput, useColorScheme } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { styles } from "./Styles"
+import { register } from "../../controllers/UserController";
+import { RegisterPropsType } from "../../types/RegisterPropsType";
 
-function RegisterScreen(): React.JSX.Element {
-
-  ////const ip = '172.27.112.1'
-  const ip = "192.168.1.102"
-  const port = '3000'
+function RegisterScreen({route, navigation}: RegisterPropsType): React.JSX.Element {
 
   const isDarkMode = useColorScheme() === 'dark'
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   }
@@ -19,35 +16,11 @@ function RegisterScreen(): React.JSX.Element {
   const [password, onChangePassword] = React.useState('')
   const [repassword, onChangeRepassword] = React.useState('')
 
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      login: login,
-      password: password
-    })
-  }
-
   const onPressRegister = async () => {
     if (password !== repassword) {
       Alert.alert("Podane hasła nie są takie same.")
     } else {
-      try {
-        await fetch(
-          `http://${ip}:${port}/user/addUser`, requestOptions)
-          .then(response => {
-            response.json()
-              .then(data => {
-                if (data.errors === undefined) {
-                  Alert.alert(data.message)
-                } else {
-                  Alert.alert(data.errors[0].msg)
-                }
-              })
-          })
-      } catch (e: any) {
-        console.error(e)
-      }
+      register(login, password)
     }
   }
 

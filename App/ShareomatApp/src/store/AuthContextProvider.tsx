@@ -1,7 +1,7 @@
-import {ReactNode, useState} from 'react';
+import {PropsWithChildren, ReactNode, useState} from 'react';
 import {AuthContext, authContextType} from './authContext.ts';
 
-const AuthContextProvider = (children: ReactNode) => {
+const AuthContextProvider = ( {children} : PropsWithChildren ) => {
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);

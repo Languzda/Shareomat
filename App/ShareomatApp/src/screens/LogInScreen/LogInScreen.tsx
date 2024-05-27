@@ -1,47 +1,28 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Alert, Button, SafeAreaView, StatusBar, TextInput, useColorScheme } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { styles } from "./Styles"
+import { logIn } from "../../controllers/UserController";
+import { AuthContext } from "../../store/authContext";
+import { LogInPropsType } from "../../types/LogInPropsType";
 
-function LogInScreen(): React.JSX.Element {
-
-  ////const ip = '172.27.112.1'
-  const ip = "192.168.1.102"
-  const port = '3000'
-
-  const isDarkMode = useColorScheme() === 'dark'
-
+function LogInScreen({route, navigation}: LogInPropsType): React.JSX.Element {
+  const context = useContext(AuthContext);
+  const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  }
+  };
 
-  const [login, onChangeLogin] = React.useState('')
-  const [password, onChangePassword] = React.useState('')
-
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      login: login,
-      password: password
-    })
-  }
+  const [login, onChangeLogin] = React.useState('');
+  const [password, onChangePassword] = React.useState('');
 
   const onPressLogIn = async () => {
-    try {
-      await fetch(
-        `http://${ip}:${port}/user/logIn`, requestOptions)
-        .then(response => {
-          response.json()
-            .then(data => {
-              Alert.alert(data.message)
-            })
-        })
-    }
-    catch (e: any) {
-      console.error(e)
-    }
+    logIn(login, password, context);
   }
+
+  const onPressRegister = () => {
+    navigation.navigate("Register");
+  };
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -68,8 +49,13 @@ function LogInScreen(): React.JSX.Element {
         title="zaloguj"
       />
 
+      <Button
+        onPress={onPressRegister}
+        title="zarejestruj"
+      />
+
     </SafeAreaView>
   )
 }
 
-export default LogInScreen
+export default LogInScreen;
