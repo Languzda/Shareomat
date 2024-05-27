@@ -6,6 +6,8 @@ import userRoute from './routes/user';
 import cardRoute from './routes/card';
 import offerRoute from './routes/offer';
 import { errorHandler } from './middlewares/errors';
+import { fileStorage, fileFilter } from './storage/fileStorage';
+import multer from 'multer';
 
 dotenv.config();
 
@@ -20,6 +22,9 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+app.use('/data/images', express.static('data/images'));
 
 app.use('/user', userRoute);
 app.use('/card', cardRoute);
