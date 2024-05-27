@@ -1,5 +1,12 @@
 import express from 'express';
-import { addOffer, getActiveOffers, getOfferById, getOffersByCardId, useOffer } from '../controllers/offer';
+import {
+  addOffer,
+  addOfferWithPhoto,
+  getActiveOffers,
+  getOfferById,
+  getOffersByCardId,
+  useOffer,
+} from '../controllers/offer';
 import {
   addOfferRouteValidator,
   getOfferByCardIdRouteValidator,
@@ -10,6 +17,7 @@ import { isAuth } from '../middlewares/isAuth';
 const router = express.Router();
 
 router.post('/addOffer', isAuth, addOfferRouteValidator, addOffer);
+router.post('/addOfferWithPhoto', isAuth, addOfferRouteValidator, addOfferWithPhoto);
 
 router.get('/getActiveOffers', isAuth, getActiveOffers);
 // get offers from a specific card
