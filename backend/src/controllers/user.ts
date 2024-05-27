@@ -10,10 +10,11 @@ export async function addUser(req: Request, res: Response) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    // const errorMessages = errors.array().map((error) => error.msg);
-    // return res.status(400).json({ errors: errorMessages });
-    throw new BadRequestError({ code: 422, message: 'Validation failed' });
-    // return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({
+      code: 422,
+      message: 'Validation failed',
+      context: { errors: errors.array() },
+    });
   }
 
   try {
@@ -27,16 +28,8 @@ export async function addUser(req: Request, res: Response) {
     };
 
     return res.status(201).json(responseDate);
-  } catch (e) {
-    console.error('ERROR:', e);
-    // throw new Error(`'ERROR:', ${e}`);
-
-    return res.status(400).json({
-      message: 'error',
-      data: {
-        error: e,
-      },
-    });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
 
@@ -45,9 +38,11 @@ export async function logInUser(req: Request, res: Response) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    // const errorMessages = errors.array().map((error) => error.msg);
-    // return res.status(400).json({ errors: errorMessages });
-    return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({
+      code: 422,
+      message: 'Login validation failed',
+      context: { errors: errors.array() },
+    });
   }
 
   try {

@@ -7,13 +7,15 @@ import {
   updateToUsedOffer,
 } from './dbControllers/offer';
 import { validationResult } from 'express-validator';
+import BadRequestError from '../errors/BadRequestError';
+import ServerError from '../errors/ServerError';
 
 export async function addOffer(req: Request, res: Response) {
   const { name, type, description, limit, price, photo, card_id, status } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
   }
 
   const intLimit = parseInt(limit);
@@ -30,9 +32,44 @@ export async function addOffer(req: Request, res: Response) {
     };
 
     return res.status(201).json(responseData);
-  } catch (e) {
-    console.error('ERROR:', e);
-    return res.status(400).json({ ERROR: e });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
+  }
+}
+
+export async function addOfferWithPhoto(req: Request, res: Response) {
+  const { name, type, description, limit, price, card_id, status } = req.body;
+  const photo = req.file?.path;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
+  }
+
+  if (!req.file) {
+    throw new BadRequestError({ code: 400, message: 'No image provided' });
+  }
+
+  console.log(req.file);
+  const imageUrl = req.file.path.replace('\\', '/').replace('\\', '/');
+  console.log(imageUrl);
+
+  const intLimit = parseInt(limit);
+  const floatPrice = parseFloat(price);
+
+  try {
+    const newOffer = await addOfferToDB(name, type, description, intLimit, floatPrice, imageUrl, card_id, status);
+
+    const responseData = {
+      message: 'offer added successfully',
+      data: {
+        newOffer,
+      },
+    };
+
+    return res.status(201).json(responseData);
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
 
@@ -41,9 +78,8 @@ export async function getActiveOffers(req: Request, res: Response) {
     const offers = await getActiveOffersFromDB();
 
     return res.status(200).json(offers || []);
-  } catch (e) {
-    console.error('ERROR:', e);
-    return res.status(400).json({ ERROR: e });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
 
@@ -52,7 +88,7 @@ export async function getOffersByCardId(req: Request, res: Response) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
   }
 
   try {
@@ -60,9 +96,8 @@ export async function getOffersByCardId(req: Request, res: Response) {
 
     const responseData = offers || [];
     return res.status(200).json(responseData);
-  } catch (e) {
-    console.error('ERROR:', e);
-    return res.status(400).json({ ERROR: e });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
 
@@ -71,7 +106,7 @@ export async function getOfferById(req: Request, res: Response) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
   }
 
   try {
@@ -79,9 +114,8 @@ export async function getOfferById(req: Request, res: Response) {
 
     const responseData = offer || {};
     return res.status(200).json(responseData);
-  } catch (e) {
-    console.error('ERROR:', e);
-    return res.status(400).json({ ERROR: e });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
 
@@ -90,7 +124,7 @@ export async function useOffer(req: Request, res: Response) {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
   }
 
   try {
@@ -108,12 +142,12 @@ export async function useOffer(req: Request, res: Response) {
 
       return res.status(200).json(responseData);
     } else {
+      // throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
       return res.status(404).json({
         message: 'offer with that id do not exist in DB',
       });
     }
-  } catch (e) {
-    console.error('ERROR:', e);
-    return res.status(400).json({ ERROR: e });
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
 }
