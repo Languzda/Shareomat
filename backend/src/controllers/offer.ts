@@ -74,8 +74,16 @@ export async function addOfferWithPhoto(req: Request, res: Response) {
 }
 
 export async function getActiveOffers(req: Request, res: Response) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
+  }
+
+  const search = (req.query.search as string) || '';
+
   try {
-    const offers = await getActiveOffersFromDB();
+    const offers = await getActiveOffersFromDB(search);
 
     return res.status(200).json(offers || []);
   } catch (e: any) {

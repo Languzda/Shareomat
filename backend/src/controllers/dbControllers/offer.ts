@@ -9,7 +9,7 @@ export function addOfferToDB(
   price: number,
   photo: string,
   card_id: string,
-  status: string
+  status: string,
 ) {
   return prisma.offer.create({
     data: {
@@ -25,7 +25,7 @@ export function addOfferToDB(
   });
 }
 
-export function getActiveOffersFromDB() {
+export function getActiveOffersFromDB(search: string) {
   return prisma.offer.findMany({
     select: {
       id: true,
@@ -35,6 +35,9 @@ export function getActiveOffersFromDB() {
     },
     where: {
       status: 'active',
+      name: {
+        contains: search,
+      },
     },
   });
 }
