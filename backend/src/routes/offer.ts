@@ -16,7 +16,7 @@ import { isAuth } from '../middlewares/isAuth';
 
 const router = express.Router();
 
-router.post('/addOffer', isAuth, /*addOfferRouteValidator,*/ addOffer);
+router.post('/addOffer', isAuth, addOfferRouteValidator, addOffer);
 router.post('/addOfferWithPhoto', isAuth, addOfferRouteValidator, addOfferWithPhoto);
 
 router.get('/getActiveOffers', isAuth, getActiveOffers);
