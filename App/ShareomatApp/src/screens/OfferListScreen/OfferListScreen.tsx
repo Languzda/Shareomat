@@ -8,6 +8,8 @@ import { OfferListPropsType } from '../../types/OfferListPropsType';
 import { FAB, Icon } from "react-native-elements";
 import { getActiveOffers as _getActiveOffers } from '../../controllers/OfferController';
 import { AuthContext } from '../../store/authContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect } from '@react-navigation/native';
 
 function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
   function onOfferPressed(id: number) {
@@ -22,19 +24,18 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
   const context = useContext(AuthContext);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     async function getActiveOffers() {
       const offers = await _getActiveOffers(context.token);
       setActiveOffers(await offers);
     };
-
-    if (activeOffers.length == 0) {
-      getActiveOffers();
-    }
-  });
+  
+    getActiveOffers();
+  })
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
   let offers = activeOffers.map((offer, index) => <OfferListItem key={`offer${index}`} {...offer} onPress={onOfferPressed}/>);
@@ -52,19 +53,14 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
     </View>);
 
   return (
-    <View style={{height: '100%'}}>
+    <SafeAreaView style={{height: '100%'}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
           {activeOffers.length > 0 ? offers : waiting}
-        </View>
       </ScrollView>
       <FAB placement="right" icon={<Icon type="font-awesome-5" name="plus" color="white" />} onPress={onFABPress} />
-    </View>
+    </SafeAreaView>
   );
 }
 

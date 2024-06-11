@@ -1,24 +1,49 @@
 import React, { useContext, useState } from "react";
 import { AddOfferPropsType } from "../../types/AddOfferPropsType";
-import { Button, Image, ScrollView, TextInput, View } from "react-native";
+import { Alert, Button, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, View, useColorScheme } from "react-native";
 import { Asset, launchImageLibrary } from "react-native-image-picker";
 import { addOffer } from "../../controllers/OfferController";
 import { AuthContext } from "../../store/authContext";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { Dropdown } from "react-native-element-dropdown";
+import { color } from "react-native-elements/dist/helpers";
+import { useFocusEffect } from "@react-navigation/native";
+import { getUserCards as _getUserCards } from "../../controllers/CardController";
 
-function AddOfferScreen({navigation, route}: AddOfferPropsType): React.JSX.Element {
+function AddOfferScreen({ navigation, route }: AddOfferPropsType): React.JSX.Element {
+
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1,
+  }
+
   const context = useContext(AuthContext);
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
-  const [limit, setLimit] = useState('');
-  const [price, setPrice] = useState(0);
-  const [card_id, setCardId] = useState(0);
-  const [image, setImage] = useState<Asset>();
-  const status = 'Active';
+  const [limit, setLimit] = useState(Number);
+  const [price, setPrice] = useState(Number);
+  const [card_id, setCardId] = useState('');
+  const [photo, setPhoto] = useState('')
+  const [image, setImage] = useState<Asset | undefined>(undefined);
+  const status = 'active';
+
+  const [userCards, setUserCards] = useState<String[]>([])
+
+  useFocusEffect(() => {
+    async function getUserCards() {
+      const cards = await _getUserCards(context.token);
+      setUserCards(await cards);
+    };
+  
+    getUserCards();
+  })
 
   function onPressUploadPhoto() {
-    launchImageLibrary({mediaType: "photo"}, (response) => {
-      
+    launchImageLibrary({ mediaType: "photo" }, (response) => {
+
       if (response.assets && response.assets.length == 1) {
         setImage(response.assets[0]);
       }
@@ -26,9 +51,9 @@ function AddOfferScreen({navigation, route}: AddOfferPropsType): React.JSX.Eleme
   }
 
   async function onPressAddOffer() {
-    if (!image) {
+    /*if (!image) {
       return;
-    }
+    }*/
 
     const response = await addOffer(context.token, {
       name,
@@ -36,59 +61,64 @@ function AddOfferScreen({navigation, route}: AddOfferPropsType): React.JSX.Eleme
       description,
       limit,
       price,
+      photo,
       card_id,
       status,
       image
     });
+
+    Alert.alert("odpowiedź: ", response)
+    console.log("odpowiedź: ", response)
   }
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic">
+    <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
       <View style={{ height: '100%' }}>
-        { image && (
+        {image && (
           <Image source={{ uri: image.uri }} style={{ aspectRatio: '1/1' }} />
         )}
         <Button
-          title="Upload photo"
+          title="dodaj zdjęcie"
           onPress={onPressUploadPhoto}
         />
 
-        <TextInput 
-          placeholder="Offer name"
+        <TextInput
+          placeholder="nazwa oferty"
           onChangeText={setName}
         />
 
-        <TextInput 
-          placeholder="Offer type"
+        <TextInput
+          placeholder="typ oferty"
           onChangeText={setType}
         />
 
-        <TextInput 
-          placeholder="Offer description"
+        <TextInput
+          placeholder="opis"
           onChangeText={setDescription}
           multiline={true}
           numberOfLines={4}
         />
 
-        <TextInput 
-          placeholder="Offer limit"
-          onChangeText={setLimit}
+        <TextInput
+          placeholder="limit (liczba)"
+          onChangeText={value => setLimit(parseInt(value))}
+          inputMode="decimal"
         />
 
         <TextInput
-          placeholder="Offer price"
+          placeholder="cena (z kropką)"
           onChangeText={value => setPrice(parseFloat(value))}
           inputMode="decimal"
         />
 
         <TextInput
-          placeholder="Card id"
-          onChangeText={value => setCardId(parseInt(value))}
+          placeholder="numer karty"
+          onChangeText={value => setCardId(value)}
           inputMode="numeric"
         />
 
         <Button
-          title="Dodaj"
+          title="dodaj ofertę"
           onPress={onPressAddOffer}
         />
       </View>

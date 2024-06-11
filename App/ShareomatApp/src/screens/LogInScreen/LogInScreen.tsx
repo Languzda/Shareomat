@@ -11,6 +11,7 @@ function LogInScreen({route, navigation}: LogInPropsType): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
   const [login, onChangeLogin] = React.useState('');
@@ -31,10 +32,15 @@ function LogInScreen({route, navigation}: LogInPropsType): React.JSX.Element {
         backgroundColor={backgroundStyle.backgroundColor}
       />
 
+      <Button
+        onPress={onPressRegister}
+        title="rejestracja >"
+      />
+
       <TextInput
         style={styles.input}
         onChangeText={onChangeLogin}
-        placeholder="login"
+        placeholder="nazwa użytkownika"
       />
 
       <TextInput
@@ -47,11 +53,6 @@ function LogInScreen({route, navigation}: LogInPropsType): React.JSX.Element {
       <Button
         onPress={onPressLogIn}
         title="zaloguj"
-      />
-
-      <Button
-        onPress={onPressRegister}
-        title="zarejestruj"
       />
 
     </SafeAreaView>

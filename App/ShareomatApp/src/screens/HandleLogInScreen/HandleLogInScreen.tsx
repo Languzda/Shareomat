@@ -20,8 +20,8 @@ function HandleLogInScreen(): React.JSX.Element {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="LogIn" component={LogInScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="LogIn" component={LogInScreen} options={{ title: "Logowanie" }}/>
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: "Rejestracja" }}/>
         </Stack.Navigator>
       </NavigationContainer>
     );

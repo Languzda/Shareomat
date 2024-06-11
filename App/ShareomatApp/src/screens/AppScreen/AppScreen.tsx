@@ -6,6 +6,7 @@ import { TabParamListType } from "../../types/TabParamListType";
 import ActiveOffersScreen from "../ActiveOffersScreen/ActiveOffersScreen";
 import ProfileScreen from "../ProfileScreen/ProfileScreen";
 import { Icon } from "react-native-elements";
+import CardAddingScreen from "../CardAddingScreen/CardAddingScreen";
 
 const Tab = createBottomTabNavigator<TabParamListType>();
 
@@ -15,6 +16,7 @@ function AppScreen(): React.JSX.Element {
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
   return (
@@ -28,18 +30,29 @@ function AppScreen(): React.JSX.Element {
           name="ActiveOffers"
           component={ActiveOffersScreen}
           options={{
+            title: "Oferty",
             headerShown: false,
-            tabBarIcon: (props) => <Icon type="font-awesome-5" name="list" color={props.color} size={props.size}/>,
+            tabBarIcon: (props) => <Icon type="font-awesome-5" name="list" color={props.color} size={props.size} />,
           }}
-          listeners={{tabPress: (e) => {
-            e.preventDefault();
-            navigationRef.dispatch(CommonActions.navigate({name: "OfferList"}));
-          }}}/>
-        <Tab.Screen 
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+              navigationRef.dispatch(CommonActions.navigate({ name: "OfferList" }));
+            }
+          }} />
+        <Tab.Screen
+          name="Cards"
+          component={CardAddingScreen}
+          options={{
+            title: "Karty",
+            tabBarIcon: (props) => <Icon type="font-awesome-5" name="address-card" color={props.color} size={props.size} />,
+          }} />
+        <Tab.Screen
           name="Profile"
           component={ProfileScreen}
           options={{
-            tabBarIcon: (props) => <Icon type="font-awesome-5" name="user" color={props.color} size={props.size}/>,
+            title: "Profil",
+            tabBarIcon: (props) => <Icon type="font-awesome-5" name="user" color={props.color} size={props.size} />,
           }} />
       </Tab.Navigator>
     </NavigationContainer>
