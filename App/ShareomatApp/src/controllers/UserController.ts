@@ -21,11 +21,13 @@ export async function logIn(login: string, password: string, context: authContex
       .then(response => {
         response.json()
           .then(data => {
-            if (data.error === undefined) {
-              context.onLogin(data.data.token, data.data.userId);
-            }
-            else {
-              Alert.alert("nie udało sie :(");
+            if (data.message !== undefined) {
+              Alert.alert("", data.message)
+              if (data.data.token !== undefined && data.data.userId !== undefined) {
+                context.onLogin(data.data.token, data.data.userId);
+              }
+            } else {
+              Alert.alert("Error", data.errors[0].context.errors[0].msg);
             }
           })
       })
@@ -54,11 +56,11 @@ export async function register(login: string, password: string) {
         response.json()
           .then(data => {
             console.log(data);
-            
+
             if (data.errors === undefined) {
               Alert.alert(data.message)
             } else {
-              Alert.alert(data.errors[0].message)
+              Alert.alert("Error", data.errors[0].context.errors[0].msg)
             }
           })
       })

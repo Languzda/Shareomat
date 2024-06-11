@@ -44,19 +44,6 @@ export async function addOffer(
     await fetch(`http://${ip}:${port}/offer/addOffer`, {
       method: 'POST',
       headers: headers,
-      //body: formData
-      /*body: JSON.stringify({
-        name: "test",
-        type: "passwordowy",
-        description: "descriptio",
-        limit: 69, 
-        price: 97.9, 
-        photo: "rety",
-        card_id: "99999992", 
-        //card: "99999992",
-        status: "string",
-        image: undefined
-      })*/
       body: JSON.stringify({
         name: data.name,
         type: data.type,
@@ -72,13 +59,10 @@ export async function addOffer(
       .then(response => {
         response.json()
           .then(data => {
-            console.log(data);
-            Alert.alert("problemino", data.token, data.message, data.newCard)
-
             if (data.errors === undefined) {
               Alert.alert(data.message)
             } else {
-              Alert.alert("", data.errors[0].message)
+              Alert.alert("Error", data.errors[0].context.errors[0].msg)
             }
 
             return response.json();

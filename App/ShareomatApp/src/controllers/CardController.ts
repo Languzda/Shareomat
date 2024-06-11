@@ -23,8 +23,15 @@ export async function addCard(cardId: string, userId: string, token: string) {
       .then(response => {
         response.json()
           .then(data => {
-            console.log(data);
-            Alert.alert("problemino", " " + data.token + " " + data.message + " " + data.newCard)
+            if (data.message !== undefined) {
+              if (data.message === "card adding status") {
+                Alert.alert("Card added succesfully")
+              } else {
+                Alert.alert("", data.message)
+              }
+            } else {
+              Alert.alert("Error", data.errors[0].message);
+            }
           })
       })
   }
