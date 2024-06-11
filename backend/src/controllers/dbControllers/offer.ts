@@ -1,3 +1,4 @@
+import { connect } from 'http2';
 import { prisma } from './prismaClient';
 import { Offer } from '@prisma/client';
 
@@ -19,7 +20,8 @@ export function addOfferToDB(
       limit: limit,
       price: price,
       photo: photo,
-      card_id: card_id,
+      //card_id: card_id,
+      card: {connect: {card_id: card_id}},
       status: status,
     },
   });
