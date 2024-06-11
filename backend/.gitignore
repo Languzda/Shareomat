@@ -3,5 +3,5 @@ package-lock.json
 *.log
 
 dist
-data/*
+data/images/*
 .env
