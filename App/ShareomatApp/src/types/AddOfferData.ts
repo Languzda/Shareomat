@@ -4,9 +4,10 @@ export type AddOfferData = {
   name: string, 
   type: string, 
   description: string, 
-  limit: string, 
+  limit: number, 
   price: number, 
-  card_id: number, 
+  photo: string | undefined,
+  card_id: string,
   status: string,
-  image: Asset
+  image: Asset | undefined
 };
