@@ -10,20 +10,18 @@ function CardAddingScreen(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark'
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   }
 
   const [cardId, onChangeCardId] = React.useState('')
 
   const onPressAddCard = async () => {
-    addCard(cardId, context.token) // , userId
+    //addCard(cardId, context.token) // , userId
+    addCard(cardId, context.userId, context.token)
   }
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
 
       <TextInput
         keyboardType="numeric"

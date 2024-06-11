@@ -10,6 +10,7 @@ function RegisterScreen({route, navigation}: RegisterPropsType): React.JSX.Eleme
   const isDarkMode = useColorScheme() === 'dark'
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   }
 
   const [login, onChangeLogin] = React.useState('')
@@ -34,7 +35,7 @@ function RegisterScreen({route, navigation}: RegisterPropsType): React.JSX.Eleme
       <TextInput
         style={styles.input}
         onChangeText={onChangeLogin}
-        placeholder="login"
+        placeholder="nazwa użytkownika"
       />
 
       <TextInput
