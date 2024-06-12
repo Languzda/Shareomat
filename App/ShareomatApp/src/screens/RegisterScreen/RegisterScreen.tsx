@@ -19,7 +19,7 @@ function RegisterScreen({route, navigation}: RegisterPropsType): React.JSX.Eleme
 
   const onPressRegister = async () => {
     if (password !== repassword) {
-      Alert.alert("Podane hasła nie są takie same.")
+      Alert.alert("Error", "Passwords are not the same") //"Podane hasła nie są takie same.")
     } else {
       register(login, password)
     }

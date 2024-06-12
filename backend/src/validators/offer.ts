@@ -1,5 +1,4 @@
-import { body, header, param } from 'express-validator';
-import { checkIfUserExistById } from './user';
+import { body, param } from 'express-validator';
 import { checkIfCardExistsById } from './card';
 import { getOfferStatus } from '../controllers/dbControllers/offer';
 
@@ -13,20 +12,17 @@ export const addOfferRouteValidator = [
   body('description', 'Description must be not empty').not().isEmpty(),
   body('limit', 'Limit must be not empty').not().isEmpty().isInt(),
   body('price', 'Price must be not empty').not().isEmpty().isDecimal(),
-  // body('photo', 'Photo must be not empty').not().isEmpty(),
-  body('card_id', 'Card_id must be not empty').not().isEmpty(),
-  body('status', 'Status must be not empty').not().isEmpty(),
-  body('type', 'Type must be not empty').not().isEmpty(),
-  header('user_id').custom(async (value) => {
+  body('card_id').custom(async (value) => {
     if (!value) {
-      throw new Error('User_id is required');
+      throw new Error('Card_id is required');
     }
 
-    if (!(await checkIfUserExistById(value))) {
-      return Promise.reject('User not found');
+    if (!(await checkIfCardExistsById(value))) {
+      return Promise.reject('Card not found');
     }
-    return true;
   }),
+  body('status', 'Status must be not empty').not().isEmpty(),
+  body('type', 'Type must be not empty').not().isEmpty(),
 ];
 
 export const getOfferByCardIdRouteValidator = [
