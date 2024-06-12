@@ -21,7 +21,6 @@ export const addOfferRouteValidator = [
       return Promise.reject('Card not found');
     }
   }),
-  body('status', 'Status must be not empty').not().isEmpty(),
   body('type', 'Type must be not empty').not().isEmpty(),
 ];
 

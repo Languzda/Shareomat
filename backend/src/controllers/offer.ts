@@ -12,7 +12,7 @@ import BadRequestError from '../errors/BadRequestError';
 import ServerError from '../errors/ServerError';
 
 export async function addOffer(req: Request, res: Response) {
-  const { name, type, description, limit, price, photo, card_id, status } = req.body;
+  const { name, type, description, limit, price, photo, card_id } = req.body;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -21,6 +21,7 @@ export async function addOffer(req: Request, res: Response) {
 
   const intLimit = parseInt(limit);
   const floatPrice = parseFloat(price);
+  const status = 'active';
 
   try {
     const newOffer = await addOfferToDB(name, type, description, intLimit, floatPrice, photo, card_id, status);
