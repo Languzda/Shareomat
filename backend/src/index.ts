@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import 'express-async-errors';
+import bodyParser from 'body-parser';
 
 import userRoute from './routes/user';
 import cardRoute from './routes/card';
@@ -14,7 +15,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

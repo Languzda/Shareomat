@@ -40,7 +40,6 @@ export async function addOffer(req: Request, res: Response) {
 
 export async function addOfferWithPhoto(req: Request, res: Response) {
   const { name, type, description, limit, price, card_id, status } = req.body;
-  const photo = req.file?.path;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

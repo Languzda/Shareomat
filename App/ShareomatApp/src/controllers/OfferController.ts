@@ -35,20 +35,35 @@ export async function addOffer(token: string, data: AddOfferData) {
   const formData = new FormData();
 
   let key: keyof AddOfferData;
+  console.log('data', data.image);
   for (key in data) {
     formData.append(key, data[key]);
   }
 
+  console.log('form', formData);
+
   const headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${token}`,
   };
 
   try {
-    await fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
+    // const response = await fetch(
+    //   `http://${ip}:${port}/offer/addOfferWithPhoto`,
+    //   {
+    //     method: 'POST',
+    //     headers: headers,
+    //     body: formData,
+    //   },
+    // );
+    //
+    // const data = await response.json();
+    // console.log('res', data);
+
+    fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
       method: 'POST',
       headers: headers,
-      body: JSON.stringify(formData),
+      body: formData,
     }).then(response => {
       response.json().then(data => {
         console.log(data);
