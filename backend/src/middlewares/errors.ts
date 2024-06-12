@@ -14,8 +14,8 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
             stack: err.stack,
           },
           null,
-          2,
-        ),
+          2
+        )
       );
     }
 
@@ -23,6 +23,7 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
   }
 
   // Unhandled errors
+  console.error('Unhandled error: ', err);
   console.error(JSON.stringify(err, null, 2));
   return res.status(500).send({ errors: [{ message: 'Something went wrong' }] });
 };

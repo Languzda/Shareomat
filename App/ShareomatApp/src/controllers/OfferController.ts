@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {AddOfferData} from '../types/AddOfferData';
 import {OfferType} from '../types/OfferType.ts';
 
@@ -35,32 +35,55 @@ export async function addOffer(token: string, data: AddOfferData) {
   const formData = new FormData();
 
   let key: keyof AddOfferData;
+  console.log('data', data.image);
   for (key in data) {
     formData.append(key, data[key]);
   }
 
+  const photo = data.image;
+
+  formData.append('photo', {
+    name: photo!.fileName,
+    type: photo!.type,
+    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+  });
+
+  console.log('form', formData);
+
   const headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${token}`,
   };
 
   try {
-    await fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(formData),
-    }).then(response => {
-      response.json().then(data => {
-        console.log(data);
-        if (data.errors === undefined) {
-          Alert.alert(data.message);
-        } else {
-          Alert.alert('Error', data.errors[0].context.errors[0].msg);
-        }
+    const response = await fetch(
+      `http://${ip}:${port}/offer/addOfferWithPhoto`,
+      {
+        method: 'POST',
+        headers: headers,
+        body: formData,
+      },
+    );
 
-        return response.json();
-      });
-    });
+    const data = await response.json();
+    console.log('res', data);
+
+    // fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
+    //   method: 'POST',
+    //   headers: headers,
+    //   body: formData,
+    // }).then(response => {
+    //   response.json().then(data => {
+    //     console.log(data);
+    //     if (data.errors === undefined) {
+    //       Alert.alert(data.message);
+    //     } else {
+    //       Alert.alert('Error', data.errors[0].context.errors[0].msg);
+    //     }
+    //
+    //     return response.json();
+    //   });
+    // });
   } catch (e: any) {
     console.error(e);
 

@@ -5,6 +5,7 @@ import {
   getOffersByCardIdFromDB,
   getOfferByIdFromDB,
   updateToUsedOffer,
+  deleteAllOffersFromDBByDate,
 } from './dbControllers/offer';
 import { validationResult } from 'express-validator';
 import BadRequestError from '../errors/BadRequestError';
@@ -39,7 +40,6 @@ export async function addOffer(req: Request, res: Response) {
 
 export async function addOfferWithPhoto(req: Request, res: Response) {
   const { name, type, description, limit, price, card_id, status } = req.body;
-  const photo = req.file?.path;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -155,6 +155,32 @@ export async function useOffer(req: Request, res: Response) {
         message: 'offer with that id do not exist in DB',
       });
     }
+  } catch (e: any) {
+    throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
+  }
+}
+
+export async function deleteAllOfferOlderThen(req: Request, res: Response) {
+  const { date } = req.body;
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
+  }
+
+  const dateObj = new Date(date);
+
+  try {
+    const deletedOffers = await deleteAllOffersFromDBByDate(dateObj);
+
+    const responseData = {
+      message: 'offers deleted successfully',
+      data: {
+        deletedOffers,
+      },
+    };
+
+    return res.status(200).json(responseData);
   } catch (e: any) {
     throw new ServerError({ code: 500, message: e.message, context: { error: e }, logging: true });
   }
