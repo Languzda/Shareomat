@@ -25,11 +25,11 @@ function OfferViewScreen({
         </Text>
         {offer ? (
           <Text style={styles.sectionDescription}>
+            {offer?.description}{'\n\n'}
+            typ: {offer?.type}{'\n'}
             cena: {offer?.price} zł{'\n'}
-            limit: {offer?.limit}
-            {'\n'}
-            dodano: {offer?.date_added?.slice(0, 10)}{' '}
-            {offer?.date_added?.slice(11, 19)}
+            limit: {offer?.limit}{'\n'}
+            dodano: {offer?.date_added?.slice(0, 10)}{' '}{offer?.date_added?.slice(11, 19)}{'\n'}
           </Text>
         ) : (
           ''
