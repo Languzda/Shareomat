@@ -153,7 +153,7 @@ export async function useOffer(req: Request, res: Response) {
     } else {
       // throw new BadRequestError({ code: 400, message: 'Bad request', context: { errors: errors.array() } });
       return res.status(404).json({
-        message: 'offer with that id do not exist in DB',
+        message: 'offer with that id does not exist in DB',
       });
     }
   } catch (e: any) {
