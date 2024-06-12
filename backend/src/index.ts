@@ -36,7 +36,8 @@ app.use('/health', (req, res, next) => {
   return res.status(200).json(response);
 });
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+// app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('photo'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('photo'));
 app.use('/data/images', express.static('data/images'));
 
 app.use('/user', userRoute);

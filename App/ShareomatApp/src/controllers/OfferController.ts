@@ -1,4 +1,4 @@
-import {Alert} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import {AddOfferData} from '../types/AddOfferData';
 import {OfferType} from '../types/OfferType.ts';
 
@@ -40,6 +40,14 @@ export async function addOffer(token: string, data: AddOfferData) {
     formData.append(key, data[key]);
   }
 
+  const photo = data.image;
+
+  formData.append('photo', {
+    name: photo!.fileName,
+    type: photo!.type,
+    uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+  });
+
   console.log('form', formData);
 
   const headers = {
@@ -48,34 +56,34 @@ export async function addOffer(token: string, data: AddOfferData) {
   };
 
   try {
-    // const response = await fetch(
-    //   `http://${ip}:${port}/offer/addOfferWithPhoto`,
-    //   {
-    //     method: 'POST',
-    //     headers: headers,
-    //     body: formData,
-    //   },
-    // );
+    const response = await fetch(
+      `http://${ip}:${port}/offer/addOfferWithPhoto`,
+      {
+        method: 'POST',
+        headers: headers,
+        body: formData,
+      },
+    );
+
+    const data = await response.json();
+    console.log('res', data);
+
+    // fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
+    //   method: 'POST',
+    //   headers: headers,
+    //   body: formData,
+    // }).then(response => {
+    //   response.json().then(data => {
+    //     console.log(data);
+    //     if (data.errors === undefined) {
+    //       Alert.alert(data.message);
+    //     } else {
+    //       Alert.alert('Error', data.errors[0].context.errors[0].msg);
+    //     }
     //
-    // const data = await response.json();
-    // console.log('res', data);
-
-    fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
-      method: 'POST',
-      headers: headers,
-      body: formData,
-    }).then(response => {
-      response.json().then(data => {
-        console.log(data);
-        if (data.errors === undefined) {
-          Alert.alert(data.message);
-        } else {
-          Alert.alert('Error', data.errors[0].context.errors[0].msg);
-        }
-
-        return response.json();
-      });
-    });
+    //     return response.json();
+    //   });
+    // });
   } catch (e: any) {
     console.error(e);
 
