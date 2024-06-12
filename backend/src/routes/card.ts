@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post('/addCard', isAuth, addCardRouteValidator, addCard);
 // get cards for a single user
-router.get('/getUserCards', isAuth, getUserCards);
+router.get('/getUserCards/:user_id', isAuth, getUserCards);
 
 export default router;

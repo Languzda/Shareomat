@@ -54,7 +54,7 @@ function AddOfferScreen({
 
   useFocusEffect(() => {
     async function getUserCards() {
-      const cards = await _getUserCards(context.token);
+      const cards = await _getUserCards(context.token, context.userId);
 
       setUserCards(cards.map((e: { card_id: any; }) => e.card_id));
     }
