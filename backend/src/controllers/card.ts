@@ -31,7 +31,7 @@ export async function addCard(req: RequestWithUser, res: Response) {
 }
 
 export async function getUserCards(req: Request, res: Response) {
-  const { user_id } = req.body;
+  const { user_id } = req.params;
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
