@@ -31,6 +31,20 @@ export async function getOfferById(
   return await response.json();
 }
 
+export async function useOffer(offer_id: string, token: string) {
+  const response = await fetch(
+    `http://${ip}:${port}/offer/useOfferById/${offer_id}`,
+    {
+      method: "put",
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  )
+  return await response.json()
+}
+
 export async function addOffer(token: string, data: AddOfferData) {
   const formData = new FormData();
 
