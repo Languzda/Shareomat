@@ -24,6 +24,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getUserCards as _getUserCards } from '../../controllers/CardController';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { styles } from './Styles';
+import RNPickerSelect from 'react-native-picker-select';
 
 function AddOfferScreen({
   navigation,
@@ -94,9 +95,10 @@ function AddOfferScreen({
     console.log('odpowiedź: ', response);
   }
 
-  const getHeader = () => {
-    return (
-      <SafeAreaView>
+  return (
+    <ScrollView style={backgroundStyle}>
+      <View style={styles.offer_view}>
+
         {image && (
           <Image source={{ uri: image.uri }} style={styles.image} />
         )}
@@ -138,23 +140,6 @@ function AddOfferScreen({
           onChangeText={value => setPrice(parseFloat(value))}
           inputMode="decimal"
         />
-      </SafeAreaView>
-    )
-  }
-
-  const getFooter = () => {
-    return (
-      <Pressable
-        style={styles.button}
-        onPress={onPressAddOffer}>
-        <Text style={styles.button_text}>dodaj ofertę</Text>
-      </Pressable>
-    )
-  }
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <View style={styles.offer_view}>
 
         {userCards.length == 0 ? (
           <Text> Proszę najpierw dodać kartę </Text>
@@ -170,21 +155,21 @@ function AddOfferScreen({
             dropDownContainerStyle={styles.dropdown_container}
             selectedItemContainerStyle={styles.dropdown_item}
           />*/
-
-          <FlatList
-            style={styles.list}
-            //data={["data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data","data"]}
-            data={userCards.map(card => ({ label: card, value: card }))}
-            renderItem={({item}) => {
-              return <Text>{item.label}</Text>
-            }}
-          ListHeaderComponent={getHeader}
-          ListFooterComponent={getFooter}
+          <RNPickerSelect
+            onValueChange={(value) => setCardId(value)}
+            items={userCards.map(card => ({ label: card, value: card }))}
+            placeholder={{label: "wybierz kartę"}}
           />
         )}
 
+        <Pressable
+          style={styles.button}
+          onPress={onPressAddOffer}>
+          <Text style={styles.button_text}>dodaj ofertę</Text>
+        </Pressable>
+
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
