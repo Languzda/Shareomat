@@ -1,6 +1,9 @@
+import {OfferType} from './OfferType.ts';
+
 export type StackParamListType = {
-    OfferList: undefined;
-    OfferView: {id: number};
-    AddOffer: undefined;
-    Barcode: {id: string | undefined};
+  OfferList: undefined;
+
+  OfferView: {offer: OfferType};
+  AddOffer: undefined;
+  Barcode: {id: string | undefined};
 };

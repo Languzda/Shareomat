@@ -30,6 +30,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/health', (req, res, next) => {
+  const response = { status: 'OK' };
+  return res.status(200).json(response);
+});
+
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
 app.use('/data/images', express.static('data/images'));
 

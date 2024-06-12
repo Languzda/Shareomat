@@ -21,16 +21,3 @@ export const addCardRouteValidator = [
     return true;
   }),
 ];
-
-export const getCardsRouteValidator = [
-  body('user_id').custom(async (value) => {
-    if (!value) {
-      throw new Error('User_id is required');
-    }
-
-    if (!(await checkIfUserExistById(value))) {
-      return Promise.reject('User not found');
-    }
-    return true;
-  }),
-];

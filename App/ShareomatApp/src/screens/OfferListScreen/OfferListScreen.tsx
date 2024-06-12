@@ -1,44 +1,55 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { ScrollView, Text, useColorScheme, View } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { OfferListItem } from '../../components/OfferListItem/OfferListItem';
-import { ListOfferType } from '../../types/ListOfferType';
-import { styles } from './Styles';
-import { OfferListPropsType } from '../../types/OfferListPropsType';
-import { FAB, Icon } from "react-native-elements";
-import { getActiveOffers as _getActiveOffers } from '../../controllers/OfferController';
-import { AuthContext } from '../../store/authContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useContext, useState} from 'react';
+import {ScrollView, Text, useColorScheme, View} from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {OfferListItem} from '../../components/OfferListItem/OfferListItem';
+import {ListOfferType} from '../../types/ListOfferType';
+import {styles} from './Styles';
+import {OfferListPropsType} from '../../types/OfferListPropsType';
+import {FAB, Icon} from 'react-native-elements';
+import {
+  getActiveOffers as _getActiveOffers,
+  getOfferById,
+} from '../../controllers/OfferController';
+import {AuthContext} from '../../store/authContext';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useFocusEffect} from '@react-navigation/native';
 
-function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.Element {
-  function onOfferPressed(id: number) {
-    navigation.navigate("OfferView", {id});
-  }
-
+function OfferListScreen({
+  route,
+  navigation,
+}: OfferListPropsType): React.JSX.Element {
   function onFABPress() {
-    navigation.navigate("AddOffer");
+    navigation.navigate('AddOffer');
   }
 
   const isDarkMode = useColorScheme() === 'dark';
   const [activeOffers, setActiveOffers] = useState<ListOfferType[]>([]);
   const context = useContext(AuthContext);
 
+  async function onOfferPressed(id: number) {
+    const offer = await getOfferById(id, context.token);
+    navigation.navigate('OfferView', {offer});
+  }
+
   useFocusEffect(() => {
     async function getActiveOffers() {
       const offers = await _getActiveOffers(context.token);
       setActiveOffers(await offers);
-    };
-  
-    getActiveOffers();
-  })
+    }
+
+    if (activeOffers.length == 0) {
+      getActiveOffers();
+    }
+  });
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1
+    flex: 1,
   };
 
-  let offers = activeOffers.map((offer, index) => <OfferListItem key={`offer${index}`} {...offer} onPress={onOfferPressed}/>);
+  let offers = activeOffers.map((offer, index) => (
+    <OfferListItem key={`offer${index}`} {...offer} onPress={onOfferPressed} />
+  ));
   let waiting = (
     <View style={styles.sectionContainer}>
       <Text
@@ -50,16 +61,21 @@ function OfferListScreen({ route, navigation }: OfferListPropsType): React.JSX.E
         ]}>
         Waiting for offers...
       </Text>
-    </View>);
+    </View>
+  );
 
   return (
     <SafeAreaView style={{height: '100%'}}>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-          {activeOffers.length > 0 ? offers : waiting}
+        {activeOffers.length > 0 ? offers : waiting}
       </ScrollView>
-      <FAB placement="right" icon={<Icon type="font-awesome-5" name="plus" color="white" />} onPress={onFABPress} />
+      <FAB
+        placement="right"
+        icon={<Icon type="font-awesome-5" name="plus" color="white" />}
+        onPress={onFABPress}
+      />
     </SafeAreaView>
   );
 }
