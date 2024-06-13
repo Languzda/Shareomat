@@ -1,10 +1,13 @@
 import React, {useContext} from 'react';
-import {Alert, SafeAreaView, Text, View} from 'react-native';
+import {Alert, SafeAreaView, Text, View, Image} from 'react-native';
 import {OfferViewPropsType} from '../../types/OfferViewPropsType';
 import {backgroundStyle, styles} from './Styles';
 import {AuthContext} from '../../store/authContext';
 import {Button} from 'react-native-elements';
 import { useOffer } from '../../controllers/OfferController';
+
+const ip = process.env.IP;
+const port = process.env.PORT;
 
 function OfferViewScreen({
   route,
@@ -13,6 +16,7 @@ function OfferViewScreen({
   const context = useContext(AuthContext);
 
   const offer = route.params.offer;
+  
 
   async function onPressActivate() {
     const response = await useOffer(offer.id, context.token);
@@ -24,6 +28,7 @@ function OfferViewScreen({
   return (
     <SafeAreaView style={backgroundStyle}>
       <View style={styles.sectionContainer}>
+        <Image source={{uri: `http://${ip}:${port}/${offer.photo}`}} style={{aspectRatio: '1/1'}}/>
         <Text style={styles.sectionTitle}>
           {offer ? offer.name : 'chwila...'}
         </Text>
