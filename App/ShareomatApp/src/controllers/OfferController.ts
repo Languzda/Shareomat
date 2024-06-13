@@ -80,27 +80,16 @@ export async function addOffer(token: string, data: AddOfferData) {
     );
 
     const data = await response.json();
-    console.log('res', data);
 
-    // fetch(`http://${ip}:${port}/offer/addOfferWithPhoto`, {
-    //   method: 'POST',
-    //   headers: headers,
-    //   body: formData,
-    // }).then(response => {
-    //   response.json().then(data => {
-    //     console.log(data);
-    //     if (data.errors === undefined) {
-    //       Alert.alert(data.message);
-    //     } else {
-    //       Alert.alert('Error', data.errors[0].context.errors[0].msg);
-    //     }
-    //
-    //     return response.json();
-    //   });
-    // });
+    if (data.errors === undefined) {
+      Alert.alert(data.message);
+    } else {
+      Alert.alert('Error', data.errors[0].context.errors[0].msg);
+    }
+
   } catch (e: any) {
     console.error(e);
 
-    return 'EERRORR: ' + e;
+    return 'ERROR: ' + e;
   }
 }

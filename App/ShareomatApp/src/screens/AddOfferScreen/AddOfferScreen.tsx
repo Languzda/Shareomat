@@ -90,9 +90,6 @@ function AddOfferScreen({
       status,
       image,
     });
-
-    Alert.alert('odpowiedź: ', response);
-    console.log('odpowiedź: ', response);
   }
 
   return (
