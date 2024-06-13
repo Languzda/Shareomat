@@ -1,9 +1,12 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, Text, View} from 'react-native';
+import {SafeAreaView, Text, View, Image} from 'react-native';
 import {OfferViewPropsType} from '../../types/OfferViewPropsType';
 import {backgroundStyle, styles} from './Styles';
 import {AuthContext} from '../../store/authContext';
 import {Button} from 'react-native-elements';
+
+const ip = process.env.IP;
+const port = process.env.PORT;
 
 function OfferViewScreen({
   route,
@@ -12,6 +15,7 @@ function OfferViewScreen({
   const context = useContext(AuthContext);
 
   const offer = route.params.offer;
+  
 
   function onPressActivate() {
     navigation.navigate('Barcode', {id: offer?.card_id});
@@ -20,6 +24,7 @@ function OfferViewScreen({
   return (
     <SafeAreaView style={backgroundStyle}>
       <View style={styles.sectionContainer}>
+        <Image source={{uri: `http://${ip}:${port}/${offer.photo}`}} style={{aspectRatio: '1/1'}}/>
         <Text style={styles.sectionTitle}>
           {offer ? offer.name : 'chwila...'}
         </Text>

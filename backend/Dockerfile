@@ -4,6 +4,7 @@ FROM node:18.16.0-alpine3.17
 RUN mkdir -p /opt/app
 RUN mkdir -p /opt/app/src
 RUN mkdir -p /opt/app/prisma
+RUN mkdir -p /opt/app/data/images
 
 WORKDIR /opt/app
 
