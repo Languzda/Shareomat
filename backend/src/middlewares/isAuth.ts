@@ -21,6 +21,7 @@ export const isAuth = (req: RequestWithUser, res: Response, next: NextFunction) 
     throw new BadRequestError({ code: 401, message: 'Not authenticated', logging: false });
   }
 
+  //TODO type it, check if user exists
   // @ts-ignore
   req.userId = decodedToken.userId;
   next();

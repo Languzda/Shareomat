@@ -37,17 +37,16 @@ export async function addCard(cardId: string, userId: string, token: string) {
   }
 }
 
-export async function getUserCards(token: string) {
-  const response = await fetch(`http://${ip}:${port}/card/getUserCards`, {
+export async function getUserCards(token: string, userId: string) {
+  const response = await fetch(`http://${ip}:${port}/card/getUserCards/${userId}`, {
     headers: {
+
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-    },
+    }
   });
 
   const res = await response.json();
-  console.log(res.data);
-  console.log(res.data.cards);
 
   return res.data.cards;
 }

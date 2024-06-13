@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import 'express-async-errors';
+import bodyParser from 'body-parser';
 
 import userRoute from './routes/user';
 import cardRoute from './routes/card';
@@ -14,7 +15,7 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -35,7 +36,8 @@ app.use('/health', (req, res, next) => {
   return res.status(200).json(response);
 });
 
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'));
+// app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('photo'));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('photo'));
 app.use('/data/images', express.static('data/images'));
 
 app.use('/user', userRoute);

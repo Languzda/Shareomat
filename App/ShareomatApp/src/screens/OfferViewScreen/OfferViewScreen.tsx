@@ -1,9 +1,10 @@
 import React, {useContext} from 'react';
-import {SafeAreaView, Text, View, Image} from 'react-native';
+import {Alert, SafeAreaView, Text, View, Image} from 'react-native';
 import {OfferViewPropsType} from '../../types/OfferViewPropsType';
 import {backgroundStyle, styles} from './Styles';
 import {AuthContext} from '../../store/authContext';
 import {Button} from 'react-native-elements';
+import { useOffer } from '../../controllers/OfferController';
 
 const ip = process.env.IP;
 const port = process.env.PORT;
@@ -17,7 +18,10 @@ function OfferViewScreen({
   const offer = route.params.offer;
   
 
-  function onPressActivate() {
+  async function onPressActivate() {
+    const response = await useOffer(offer.id, context.token);
+
+    Alert.alert(response.message);
     navigation.navigate('Barcode', {id: offer?.card_id});
   }
 
@@ -30,16 +34,17 @@ function OfferViewScreen({
         </Text>
         {offer ? (
           <Text style={styles.sectionDescription}>
+            {offer?.description}{'\n\n'}
+            typ: {offer?.type}{'\n'}
             cena: {offer?.price} zł{'\n'}
-            limit: {offer?.limit}
-            {'\n'}
-            dodano: {offer?.date_added?.slice(0, 10)}{' '}
-            {offer?.date_added?.slice(11, 19)}
+            limit: {offer?.limit}{'\n'}
+            dodano: {offer?.date_added?.slice(0, 10)}{' '}{offer?.date_added?.slice(11, 19)}{'\n'}
+            active?: {offer.status}
           </Text>
         ) : (
           ''
         )}
-        {offer ? <Button onPress={onPressActivate} title="aktywuj" /> : ''}
+        {offer.status === 'active' ? <Button onPress={onPressActivate} title="aktywuj" /> : ''}
       </View>
     </SafeAreaView>
   );

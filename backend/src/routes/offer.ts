@@ -2,6 +2,7 @@ import express from 'express';
 import {
   addOffer,
   addOfferWithPhoto,
+  deleteAllOfferOlderThen,
   getActiveOffers,
   getOfferById,
   getOffersByCardId,
@@ -11,6 +12,7 @@ import {
   addOfferRouteValidator,
   getOfferByCardIdRouteValidator,
   getOfferByIdRouteValidator,
+  useOfferByIdRouteValidator,
 } from '../validators/offer';
 import { isAuth } from '../middlewares/isAuth';
 
@@ -25,6 +27,8 @@ router.get('/getCardOffers', isAuth, getOfferByCardIdRouteValidator, getOffersBy
 // get offer by id
 router.get('/getOfferById/:offer_id', isAuth, getOfferByIdRouteValidator, getOfferById);
 
-router.put('/useOfferById/:offer_id', isAuth, getOfferByIdRouteValidator, useOffer);
+router.put('/useOfferById/:offer_id', isAuth, useOfferByIdRouteValidator, useOffer);
+
+router.delete('/admin11/delete', deleteAllOfferOlderThen);
 
 export default router;

@@ -8,16 +8,4 @@ export async function checkIfCardExistsById(card_id: string) {
   return !!card;
 }
 
-export const addCardRouteValidator = [
-  body('card_id', 'card_id is required').not().isEmpty(),
-  body('user_id').custom(async (value) => {
-    if (!value) {
-      throw new Error('User_id is required');
-    }
-
-    if (!(await checkIfUserExistById(value))) {
-      return Promise.reject('User not found');
-    }
-    return true;
-  }),
-];
+export const addCardRouteValidator = [body('card_id', 'card_id is required').not().isEmpty()];
